@@ -13,4 +13,8 @@ describe("fizzbuzz", () => {
 
     expect(typeof result).toBe('string');
   });
+
+  it.only('should throw an error when 101 is passed in as an argument', () => {
+    expect(fizzBuzzChecker(101)).toThrow();
+  })
 });
