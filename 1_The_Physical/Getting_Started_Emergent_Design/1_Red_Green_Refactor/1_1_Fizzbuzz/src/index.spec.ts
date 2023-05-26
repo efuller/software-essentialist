@@ -70,7 +70,11 @@ describe("fizzbuzz", () => {
     expect(fizzBuzzChecker(45)).toBe('FizzBuzz');
   });
 
-  it('should return "43" when given 43', () => {
-    expect(fizzBuzzChecker(43)).toBe('43');
-  });
+  it.each([
+    [43, '43'],
+    [26, '26'],
+    [13, '13']
+  ])('should return "%s" when given %s', (param, expected) => {
+    expect(fizzBuzzChecker(param)).toBe(expected);
+  })
 });
