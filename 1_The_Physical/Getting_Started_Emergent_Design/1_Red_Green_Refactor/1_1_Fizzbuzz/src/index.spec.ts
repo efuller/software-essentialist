@@ -73,4 +73,8 @@ describe("fizzbuzz", () => {
   it('should return FizzBuzz when given 45', () => {
     expect(fizzBuzzChecker(45)).toBe('FizzBuzz');
   });
+
+  it('should return "43" when given 43', () => {
+    expect(fizzBuzzChecker(43)).toBe('43');
+  });
 });
