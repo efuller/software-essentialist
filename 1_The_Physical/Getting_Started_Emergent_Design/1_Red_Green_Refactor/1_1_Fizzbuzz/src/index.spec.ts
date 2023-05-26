@@ -47,34 +47,19 @@ describe("fizzbuzz", () => {
   });
 
   it.each([
-    3,
-    9,
-    36,
-  ])('should return "Fizz" when given %d', (param) => {
-    expect(fizzBuzzChecker(param)).toBe('Fizz');
-  })
-
-  it.each([
-    5,
-    10,
-    20,
-  ])('should return "Buzz" when given %d', (param) => {
-    expect(fizzBuzzChecker(param)).toBe('Buzz');
-  })
-
-  it.each([
-    15,
-    45,
-    60,
-  ])('should return "FizzBuzz" when given %d', (param) => {
-    expect(fizzBuzzChecker(param)).toBe('FizzBuzz');
-  })
-
-  it.each([
+    [3, 'Fizz'],
+    [9, 'Fizz'],
+    [36, 'Fizz'],
+    [5, 'Buzz'],
+    [10, 'Buzz'],
+    [20, 'Buzz'],
+    [15, 'FizzBuzz'],
+    [45, 'FizzBuzz'],
+    [60, 'FizzBuzz'],
     [43, '43'],
     [26, '26'],
-    [13, '13']
-  ])('should return "%s" when given %s', (param, expected) => {
+    [13, '13'],
+  ])('when given %d should return %s', (param, expected) => {
     expect(fizzBuzzChecker(param)).toBe(expected);
   })
 });
