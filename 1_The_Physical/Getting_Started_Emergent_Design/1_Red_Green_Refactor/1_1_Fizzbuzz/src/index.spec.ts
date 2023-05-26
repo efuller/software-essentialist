@@ -19,5 +19,9 @@ describe("fizzbuzz", () => {
 
   it('should throw an error when 102 is passed in as an argument', () => {
     expect(() => fizzBuzzChecker(102)).toThrowError();
-  })
+  });
+
+  it('should throw and error when -12 is passed in as an argument', () => {
+    expect(() => fizzBuzzChecker(-12)).toThrowError();
+  });
 });
