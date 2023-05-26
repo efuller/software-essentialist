@@ -8,7 +8,7 @@ function fizzBuzzChecker(num: number) {
     throw new Error();
   }
 
-  if (num === 3) {
+  if (num % 3 === 0) {
     return 'Fizz';
   }
 
