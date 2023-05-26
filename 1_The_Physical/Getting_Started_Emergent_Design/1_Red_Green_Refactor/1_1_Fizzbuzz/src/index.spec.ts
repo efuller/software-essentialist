@@ -8,6 +8,10 @@ function fizzBuzzChecker(num: number) {
     throw new Error();
   }
 
+  if (num === 3) {
+    return 'Fizz';
+  }
+
   return '';
 }
 
