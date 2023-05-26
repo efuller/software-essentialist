@@ -12,6 +12,10 @@ function fizzBuzzChecker(num: number) {
     return 'Fizz';
   }
 
+  if (num === 5) {
+    return 'Buzz';
+  }
+
   return '';
 }
 
