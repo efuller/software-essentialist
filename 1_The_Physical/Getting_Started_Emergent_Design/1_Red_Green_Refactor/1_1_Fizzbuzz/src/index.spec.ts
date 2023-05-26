@@ -37,4 +37,8 @@ describe("fizzbuzz", () => {
   it('should throw an error when 101 is passed as an argument', () => {
     expect(() => fizzBuzzChecker(101)).toThrowError();
   });
+
+  it('should return Fizz when given 3', () => {
+    expect(fizzBuzzChecker(3)).toBe('Fizz');
+  });
 });
