@@ -32,7 +32,7 @@ describe("fizzbuzz", () => {
   it.each([
     [3, 'Fizz'],
     [9, 'Fizz'],
-    [36, 'Fizz'],
+    [42, 'Fizz'],
     [5, 'Buzz'],
     [10, 'Buzz'],
     [20, 'Buzz'],
