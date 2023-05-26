@@ -62,13 +62,13 @@ describe("fizzbuzz", () => {
     expect(fizzBuzzChecker(10)).toBe('Buzz');
   });
 
-  it('should return FizzBuzz when given 15', () => {
-    expect(fizzBuzzChecker(15)).toBe('FizzBuzz');
-  });
-
-  it('should return FizzBuzz when given 45', () => {
-    expect(fizzBuzzChecker(45)).toBe('FizzBuzz');
-  });
+  it.each([
+    15,
+    45,
+    60,
+  ])('should return "FizzBuzz" when given %d', (param) => {
+    expect(fizzBuzzChecker(param)).toBe('FizzBuzz');
+  })
 
   it.each([
     [43, '43'],
