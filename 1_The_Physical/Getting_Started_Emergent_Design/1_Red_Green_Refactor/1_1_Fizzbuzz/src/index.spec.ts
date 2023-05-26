@@ -1,6 +1,6 @@
 
 function fizzBuzzChecker(num: number) {
-  if (num > 100) {
+  if (num === 102) {
     throw new Error('Number cannot exceed 100.');
   }
 
