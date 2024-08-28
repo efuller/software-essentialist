@@ -1,8 +1,12 @@
 import express, { Request, Response } from 'express';
 import { prisma } from './database';
-import { Student, Class, Assignment, StudentAssignment } from '@prisma/client';
-import { error } from 'console';
 const cors = require('cors');
+
+import { StudentController } from "./student.controller";
+import { errorHandler } from './errorHandler';
+
+const studentController = new StudentController(errorHandler);
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -18,43 +22,25 @@ const Errors = {
   }
 
 
-function isMissingKeys (data: any, keysToCheckFor: string[]) {
+export function isMissingKeys (data: any, keysToCheckFor: string[]) {
     for (let key of keysToCheckFor) {
       if (data[key] === undefined) return true;
     } 
     return false;
 }
 
-function parseForResponse(data: unknown) {
+export function parseForResponse(data: unknown) {
     return JSON.parse(JSON.stringify(data));
 }
 
-function isUUID (id: string) {
+export function isUUID (id: string) {
     return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
 }
 
 // API Endpoints
 
 // POST student created
-app.post('/students', async (req: Request, res: Response) => {
-	try {
-		if (isMissingKeys(req.body, ['name'])) {
-			return res.status(400).json({ error: Errors.ValidationError, data: undefined, success: false });
-		}
-
-		const { name } = req.body;
-
-		const student = await prisma.student.create({
-			data: {
-				name
-			}
-		});
-
-		res.status(201).json({ error: undefined, data: parseForResponse(student), success: true });
-	} catch (error) {
-		res.status(500).json({ error: Errors.ServerError, data: undefined, success: false });
-	}
-});
+app.use(studentController.getRouter());
 
 // POST class created
 app.post('/classes', async (req: Request, res: Response) => {
