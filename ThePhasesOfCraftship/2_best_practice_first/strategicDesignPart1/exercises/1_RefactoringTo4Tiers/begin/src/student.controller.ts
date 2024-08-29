@@ -1,7 +1,7 @@
 import express, { Response, Request, NextFunction } from "express";
 
 import { ErrorHandler } from "./errorHandler";
-import { isMissingKeys, parseForResponse } from "./index";
+import { isMissingKeys, isUUID, parseForResponse } from "./index";
 import { prisma } from "./database";
 import { ERROR_EXCEPTION } from "./constants";
 
@@ -21,6 +21,7 @@ export class StudentController {
   private setupRoutes() {
     this.router.post('/students', this.createStudent);
     this.router.get('/students', this.getAllStudents);
+    this.router.get('/students/:id', this.getStudentById);
   }
 
   public getRouter() {
@@ -60,6 +61,33 @@ export class StudentController {
         }
       });
       res.status(200).json({ error: undefined, data: parseForResponse(students), success: true });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  private async getStudentById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      if(!isUUID(id)) {
+        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
+      }
+      const student = await prisma.student.findUnique({
+        where: {
+          id
+        },
+        include: {
+          classes: true,
+          assignments: true,
+          reportCards: true
+        }
+      });
+
+      if (!student) {
+        return res.status(404).json({ error: ERROR_EXCEPTION.STUDENT_NOT_FOUND, data: undefined, success: false });
+      }
+
+      res.status(200).json({ error: undefined, data: parseForResponse(student), success: true });
     } catch (error) {
       next(error);
     }
