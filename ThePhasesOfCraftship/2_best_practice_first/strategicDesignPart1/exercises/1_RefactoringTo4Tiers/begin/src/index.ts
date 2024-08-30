@@ -326,44 +326,6 @@ app.get('/classes/:id/assignments', async (req: Request, res: Response) => {
     }
 });
 
-// GET all student grades
-app.get('/student/:id/grades', async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
-        if(!isUUID(id)) {
-            return res.status(400).json({ error: Errors.ValidationError, data: undefined, success: false });
-        }
-
-        // check if student exists
-        const student = await prisma.student.findUnique({
-            where: {
-                id
-            }
-        });
-
-        if (!student) {
-            return res.status(404).json({ error: Errors.StudentNotFound, data: undefined, success: false });
-        }
-
-        const studentAssignments = await prisma.studentAssignment.findMany({
-            where: {
-                studentId: id,
-                status: 'submitted',
-                grade: {
-                    not: null
-                }
-            },
-            include: {
-                assignment: true
-            },
-        });
-    
-        res.status(200).json({ error: undefined, data: parseForResponse(studentAssignments), success: true });
-    } catch (error) {
-        res.status(500).json({ error: Errors.ServerError, data: undefined, success: false });
-    }
-})
-
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {

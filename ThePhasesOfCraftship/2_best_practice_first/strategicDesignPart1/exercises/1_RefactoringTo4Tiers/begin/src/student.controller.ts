@@ -23,6 +23,7 @@ export class StudentController {
     this.router.get('/students', this.getAllStudents);
     this.router.get('/students/:id', this.getStudentById);
     this.router.get('/students/:id/assignments', this.getStudentSubmittedAssignments);
+    this.router.get('/students/:id/grades', this.getStudentGrades);
   }
 
   public getRouter() {
@@ -125,6 +126,43 @@ export class StudentController {
       res.status(200).json({ error: undefined, data: parseForResponse(studentAssignments), success: true });
     } catch (error) {
       res.status(500).json({ error: ERROR_EXCEPTION.SERVER_ERROR, data: undefined, success: false });
+    }
+  }
+
+  private async getStudentGrades(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      if(!isUUID(id)) {
+        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
+      }
+
+      // check if student exists
+      const student = await prisma.student.findUnique({
+        where: {
+          id
+        }
+      });
+
+      if (!student) {
+        return res.status(404).json({ error: ERROR_EXCEPTION.STUDENT_NOT_FOUND, data: undefined, success: false });
+      }
+
+      const studentAssignments = await prisma.studentAssignment.findMany({
+        where: {
+          studentId: id,
+          status: 'submitted',
+          grade: {
+            not: null
+          }
+        },
+        include: {
+          assignment: true
+        },
+      });
+
+      res.status(200).json({ error: undefined, data: parseForResponse(studentAssignments), success: true });
+    } catch (error) {
+      next(error);
     }
   }
 }
