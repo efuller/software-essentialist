@@ -9,3 +9,15 @@ export class StudentNotFoundException extends Error {
     super("Student not found");
   }
 }
+
+export class StudentAlreadyEnrolledException extends Error {
+  constructor() {
+    super("Student already enrolled");
+  }
+}
+
+export class ClassNotFoundException extends Error {
+  constructor() {
+    super("Class not found");
+  }
+}

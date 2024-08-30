@@ -19,7 +19,7 @@ export class ClassesController {
 
   private setupRoutes() {
     this.router.post('/classes', this.createClass);
-    // this.router.get('/classes/enroll', this.enrollStudentToClass);
+    this.router.post('/classes/enroll', this.enrollStudentToClass);
     // this.router.get('/classes/:id/assignments', this.getClassAssignments);
   }
 
@@ -45,5 +45,61 @@ export class ClassesController {
     } catch (error) {
       res.status(500).json({ error: ERROR_EXCEPTION.SERVER_ERROR, data: undefined, success: false });
     }
+  }
+
+  private async enrollStudentToClass(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (isMissingKeys(req.body, ['studentId', 'classId'])) {
+        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
+      }
+
+      const { studentId, classId } = req.body;
+
+      // check if student exists
+      const student = await prisma.student.findUnique({
+        where: {
+          id: studentId
+        }
+      });
+
+      if (!student) {
+        return res.status(404).json({ error: ERROR_EXCEPTION.STUDENT_NOT_FOUND, data: undefined, success: false });
+      }
+
+      // check if class exists
+      const cls = await prisma.class.findUnique({
+        where: {
+          id: classId
+        }
+      });
+
+      // check if student is already enrolled in class
+      const duplicatedClassEnrollment = await prisma.classEnrollment.findFirst({
+        where: {
+          studentId,
+          classId
+        }
+      });
+
+      if (duplicatedClassEnrollment) {
+        return res.status(400).json({ error: ERROR_EXCEPTION.STUDENT_ALREADY_ENROLLED, data: undefined, success: false });
+      }
+
+      if (!cls) {
+        return res.status(404).json({ error: ERROR_EXCEPTION.CLASS_NOT_FOUND, data: undefined, success: false });
+      }
+
+      const classEnrollment = await prisma.classEnrollment.create({
+        data: {
+          studentId,
+          classId
+        }
+      });
+
+      res.status(201).json({ error: undefined, data: parseForResponse(classEnrollment), success: true });
+    } catch (error) {
+      next(error);
+    }
+
   }
 }
