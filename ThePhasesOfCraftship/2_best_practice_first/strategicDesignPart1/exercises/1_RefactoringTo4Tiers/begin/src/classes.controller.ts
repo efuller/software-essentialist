@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { ErrorHandler } from "./errorHandler";
 import { prisma } from "./database";
-import { isMissingKeys, parseForResponse } from "./index";
+import { isMissingKeys, isUUID, parseForResponse } from "./index";
 import { ERROR_EXCEPTION } from "./constants";
 
 export class ClassesController {
@@ -20,7 +20,7 @@ export class ClassesController {
   private setupRoutes() {
     this.router.post('/classes', this.createClass);
     this.router.post('/classes/enroll', this.enrollStudentToClass);
-    // this.router.get('/classes/:id/assignments', this.getClassAssignments);
+    this.router.get('/classes/:id/assignments', this.getClassAssignments);
   }
 
   public getRouter() {
@@ -101,5 +101,39 @@ export class ClassesController {
       next(error);
     }
 
+  }
+
+  private async getClassAssignments(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      if(!isUUID(id)) {
+        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
+      }
+
+      // check if class exists
+      const cls = await prisma.class.findUnique({
+        where: {
+          id
+        }
+      });
+
+      if (!cls) {
+        return res.status(404).json({ error: ERROR_EXCEPTION.CLASS_NOT_FOUND, data: undefined, success: false });
+      }
+
+      const assignments = await prisma.assignment.findMany({
+        where: {
+          classId: id
+        },
+        include: {
+          class: true,
+          studentTasks: true
+        }
+      });
+
+      res.status(200).json({ error: undefined, data: parseForResponse(assignments), success: true });
+    } catch (error) {
+      next(error);
+    }
   }
 }
