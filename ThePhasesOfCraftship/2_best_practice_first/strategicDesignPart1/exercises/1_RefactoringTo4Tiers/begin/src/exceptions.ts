@@ -21,3 +21,9 @@ export class ClassNotFoundException extends Error {
     super("Class not found");
   }
 }
+
+export class AssignmentNotFoundException extends Error {
+  constructor() {
+    super("Assignment not found");
+  }
+}
