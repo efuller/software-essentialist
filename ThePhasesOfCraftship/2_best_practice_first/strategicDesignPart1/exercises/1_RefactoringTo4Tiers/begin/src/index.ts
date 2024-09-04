@@ -14,17 +14,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const Errors = {
-    ValidationError: 'ValidationError',
-    StudentNotFound: 'StudentNotFound',
-    ClassNotFound: 'ClassNotFound',
-    AssignmentNotFound: 'AssignmentNotFound',
-    ServerError: 'ServerError',
-    ClientError: 'ClientError',
-    StudentAlreadyEnrolled: 'StudentAlreadyEnrolled'
-  }
-
-
 export function isMissingKeys (data: any, keysToCheckFor: string[]) {
     for (let key of keysToCheckFor) {
       if (data[key] === undefined) return true;
