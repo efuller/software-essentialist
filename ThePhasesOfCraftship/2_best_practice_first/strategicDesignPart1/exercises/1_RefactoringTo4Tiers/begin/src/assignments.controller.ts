@@ -3,14 +3,18 @@ import { ErrorHandler } from "./errorHandler";
 import { prisma } from "./database";
 import { isMissingKeys, isUUID, parseForResponse } from "./index";
 import { ERROR_EXCEPTION } from "./constants";
+import { AssignmentsService } from "./assignments.service";
 
 export class AssignmentsController {
   private readonly router: express.Router;
 
-  constructor(private errorHandler: ErrorHandler) {
+  constructor(
+    private readonly assignmentsService: AssignmentsService,
+    private errorHandler: ErrorHandler
+  ) {
     this.router = express.Router();
-    this.setupErrorHandler();
     this.setupRoutes();
+    this.setupErrorHandler();
   }
 
   private setupErrorHandler() {
@@ -18,12 +22,11 @@ export class AssignmentsController {
   }
 
   private setupRoutes() {
-    this.router.post('/assignments', this.createClassAssignment);
-    // this.router.post('/classes/enroll', this.enrollStudentToClass);
-    this.router.get('/assignments/:id', this.getAssignmentById);
-    this.router.post('/assignments/assign', this.assignAssignmentToStudent);
-    this.router.post('/assignments/submit', this.submitAssignment);
-    this.router.post('/assignments/grade', this.gradeAssignment);
+    this.router.post('/assignments', this.createClassAssignment.bind(this));
+    this.router.get('/assignments/:id', this.getAssignmentById.bind(this));
+    this.router.post('/assignments/assign', this.assignAssignmentToStudent.bind(this));
+    this.router.post('/assignments/submit', this.submitAssignment.bind(this));
+    this.router.post('/assignments/grade', this.gradeAssignment.bind(this));
   }
 
   public getRouter() {
@@ -31,43 +34,19 @@ export class AssignmentsController {
   }
 
   private async gradeAssignment(req: Request, res: Response, next: NextFunction) {
-    try {
-
-      if (isMissingKeys(req.body, ['id', 'grade'])) {
-        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-      }
-
-      const { id, grade } = req.body;
-
-      // validate grade
-      if (!['A', 'B', 'C', 'D'].includes(grade)) {
-        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-      }
-
-      // check if student assignment exists
-      const studentAssignment = await prisma.studentAssignment.findUnique({
-        where: {
-          id
-        }
-      });
-
-      if (!studentAssignment) {
-        return res.status(404).json({ error: ERROR_EXCEPTION.ASSIGNMENT_NOT_FOUND, data: undefined, success: false });
-      }
-
-      const studentAssignmentUpdated = await prisma.studentAssignment.update({
-        where: {
-          id
-        },
-        data: {
-          grade,
-        }
-      });
-
-      res.status(200).json({ error: undefined, data: parseForResponse(studentAssignmentUpdated), success: true });
-    } catch (error) {
-      next(error);
+    if (isMissingKeys(req.body, ['id', 'grade'])) {
+      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
     }
+
+    const { id, grade } = req.body;
+
+    if (!['A', 'B', 'C', 'D'].includes(grade)) {
+      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
+    }
+
+    const response = await this.assignmentsService.gradeAssignment(id, grade);
+
+    res.status(200).json({ error: undefined, data: parseForResponse(response), success: true });
   }
 
   private async submitAssignment(req: Request, res: Response, next: NextFunction) {
@@ -78,7 +57,6 @@ export class AssignmentsController {
 
       const { id } = req.body;
 
-      // check if student assignment exists
       const studentAssignment = await prisma.studentAssignment.findUnique({
         where: {
           id

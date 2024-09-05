@@ -1,14 +1,21 @@
 import express, { Request, Response } from 'express';
 const cors = require('cors');
+import 'express-async-errors';
 
 import { StudentController } from "./student.controller";
 import { errorHandler } from './errorHandler';
 import { ClassesController } from "./classes.controller";
 import { AssignmentsController } from "./assignments.controller";
+import { AssignmentsService } from "./assignments.service";
 
 const studentController = new StudentController(errorHandler);
 const classesController = new ClassesController(errorHandler);
-const assignentsController = new AssignmentsController(errorHandler);
+
+const assignmentsService = new AssignmentsService();
+const assignmentsController = new AssignmentsController(
+  assignmentsService,
+  errorHandler
+);
 
 const app = express();
 app.use(express.json());
@@ -32,7 +39,7 @@ export function isUUID (id: string) {
 // POST student created
 app.use(studentController.getRouter());
 app.use(classesController.getRouter());
-app.use(assignentsController.getRouter());
+app.use(assignmentsController.getRouter());
 
 const port = process.env.PORT || 3000;
 
