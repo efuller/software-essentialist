@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import {
-  AssignmentNotFoundException,
+  StudentAssignmentNotFoundException,
   ClassNotFoundException,
   InvalidRequestBodyException,
   StudentAlreadyEnrolledException,
@@ -56,7 +56,7 @@ export function errorHandler(error: Error, req: Request, res: Response, next: Ne
     });
   }
 
-  if(error instanceof AssignmentNotFoundException) {
+  if (error instanceof StudentAssignmentNotFoundException) {
     return res.status(404).json({
       error: ERROR_EXCEPTION.ASSIGNMENT_NOT_FOUND,
       data: undefined,
