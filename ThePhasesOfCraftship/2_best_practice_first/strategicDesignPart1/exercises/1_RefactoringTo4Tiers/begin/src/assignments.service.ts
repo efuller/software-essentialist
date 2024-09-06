@@ -1,6 +1,5 @@
 import { prisma } from "./database";
 import { StudentAssignmentNotFoundException, StudentNotFoundException } from "./exceptions";
-import { ERROR_EXCEPTION } from "./constants";
 
 export class AssignmentsService {
   public async gradeAssignment(id: string, grade: string) {
