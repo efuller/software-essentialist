@@ -73,34 +73,7 @@ export class AssignmentsController {
 
       const { studentId, assignmentId, grade } = req.body;
 
-      // check if student exists
-      const student = await prisma.student.findUnique({
-        where: {
-          id: studentId
-        }
-      });
-
-      if (!student) {
-        return res.status(404).json({ error: ERROR_EXCEPTION.STUDENT_NOT_FOUND, data: undefined, success: false });
-      }
-
-      // check if assignment exists
-      const assignment = await prisma.assignment.findUnique({
-        where: {
-          id: assignmentId
-        }
-      });
-
-      if (!assignment) {
-        return res.status(404).json({ error: ERROR_EXCEPTION.ASSIGNMENT_NOT_FOUND, data: undefined, success: false });
-      }
-
-      const studentAssignment = await prisma.studentAssignment.create({
-        data: {
-          studentId,
-          assignmentId,
-        }
-      });
+      const studentAssignment = await this.assignmentsService.assignAssignmentToStudent(studentId, assignmentId);
 
       res.status(201).json({ error: undefined, data: parseForResponse(studentAssignment), success: true });
     } catch (error) {

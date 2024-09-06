@@ -1,5 +1,5 @@
 import { prisma } from "./database";
-import { StudentAssignmentNotFoundException } from "./exceptions";
+import { StudentAssignmentNotFoundException, StudentNotFoundException } from "./exceptions";
 import { ERROR_EXCEPTION } from "./constants";
 
 export class AssignmentsService {
@@ -47,5 +47,38 @@ export class AssignmentsService {
     });
 
     return studentAssignmentUpdated;
+  }
+
+  public async assignAssignmentToStudent(studentId: string, assignmentId: string) {
+    // check if student exists
+    const student = await prisma.student.findUnique({
+      where: {
+        id: studentId
+      }
+    });
+
+    if (!student) {
+      throw new StudentNotFoundException();
+    }
+
+    // check if assignment exists
+    const assignment = await prisma.assignment.findUnique({
+      where: {
+        id: assignmentId
+      }
+    });
+
+    if (!assignment) {
+      throw new StudentAssignmentNotFoundException();
+    }
+
+    const studentAssignment = await prisma.studentAssignment.create({
+      data: {
+        studentId,
+        assignmentId,
+      }
+    });
+
+    return studentAssignment;
   }
 }
