@@ -7,9 +7,12 @@ import { errorHandler } from './errorHandler';
 import { ClassesController } from "./classes.controller";
 import { AssignmentsController } from "./assignments.controller";
 import { AssignmentsService } from "./assignments.service";
+import { ClassesService } from "./classes.service";
 
 const studentController = new StudentController(errorHandler);
-const classesController = new ClassesController(errorHandler);
+
+const classesService = new ClassesService();
+const classesController = new ClassesController(classesService, errorHandler);
 
 const assignmentsService = new AssignmentsService();
 const assignmentsController = new AssignmentsController(

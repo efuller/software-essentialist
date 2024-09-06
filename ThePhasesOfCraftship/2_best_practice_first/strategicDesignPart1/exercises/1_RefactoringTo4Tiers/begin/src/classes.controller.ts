@@ -3,11 +3,15 @@ import { ErrorHandler } from "./errorHandler";
 import { prisma } from "./database";
 import { isMissingKeys, isUUID, parseForResponse } from "./index";
 import { ERROR_EXCEPTION } from "./constants";
+import { ClassesService } from "./classes.service";
 
 export class ClassesController {
   private readonly router: express.Router;
 
-  constructor(private errorHandler: ErrorHandler) {
+  constructor(
+    private readonly classesService: ClassesService,
+    private errorHandler: ErrorHandler
+  ) {
     this.router = express.Router();
     this.setupErrorHandler();
     this.setupRoutes();
@@ -35,11 +39,7 @@ export class ClassesController {
 
       const { name } = req.body;
 
-      const cls = await prisma.class.create({
-        data: {
-          name
-        }
-      });
+      const cls = await this.classesService.createClass(name);
 
       res.status(201).json({ error: undefined, data: parseForResponse(cls), success: true });
     } catch (error) {
