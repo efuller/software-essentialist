@@ -89,12 +89,7 @@ export class AssignmentsController {
 
       const { classId, title } = req.body;
 
-      const assignment = await prisma.assignment.create({
-        data: {
-          classId,
-          title
-        }
-      });
+      const assignment = await this.assignmentsService.createClassAssignment(classId, title);
 
       res.status(201).json({ error: undefined, data: parseForResponse(assignment), success: true });
     } catch (error) {

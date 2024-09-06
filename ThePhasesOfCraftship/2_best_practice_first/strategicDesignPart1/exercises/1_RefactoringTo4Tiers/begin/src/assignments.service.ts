@@ -81,4 +81,15 @@ export class AssignmentsService {
 
     return studentAssignment;
   }
+
+  public async createClassAssignment(classId: string, title: string) {
+    const assignment = await prisma.assignment.create({
+      data: {
+        classId,
+        title
+      }
+    });
+
+    return assignment;
+  }
 }
