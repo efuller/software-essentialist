@@ -92,4 +92,22 @@ export class AssignmentsService {
 
     return assignment;
   }
+
+  public async getAssignmentById(id: string) {
+    const assignment = await prisma.assignment.findUnique({
+      include: {
+        class: true,
+        studentTasks: true
+      },
+      where: {
+        id
+      }
+    });
+
+    if (!assignment) {
+      throw new StudentAssignmentNotFoundException();
+    }
+
+    return assignment;
+  }
 }
