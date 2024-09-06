@@ -57,24 +57,7 @@ export class AssignmentsController {
 
       const { id } = req.body;
 
-      const studentAssignment = await prisma.studentAssignment.findUnique({
-        where: {
-          id
-        }
-      });
-
-      if (!studentAssignment) {
-        return res.status(404).json({ error: ERROR_EXCEPTION.ASSIGNMENT_NOT_FOUND, data: undefined, success: false });
-      }
-
-      const studentAssignmentUpdated = await prisma.studentAssignment.update({
-        where: {
-          id
-        },
-        data: {
-          status: 'submitted'
-        }
-      });
+      const studentAssignmentUpdated = await this.assignmentsService.submitAssignment(id);
 
       res.status(200).json({ error: undefined, data: parseForResponse(studentAssignmentUpdated), success: true });
     } catch (error) {
