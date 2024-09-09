@@ -32,19 +32,15 @@ export class ClassesController {
   }
 
   private async createClass(req: Request, res: Response, next: NextFunction) {
-    try {
-      if (isMissingKeys(req.body, ['name'])) {
-        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-      }
-
-      const { name } = req.body;
-
-      const cls = await this.classesService.createClass(name);
-
-      res.status(201).json({ error: undefined, data: parseForResponse(cls), success: true });
-    } catch (error) {
-      res.status(500).json({ error: ERROR_EXCEPTION.SERVER_ERROR, data: undefined, success: false });
+    if (isMissingKeys(req.body, ['name'])) {
+      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
     }
+
+    const { name } = req.body;
+
+    const cls = await this.classesService.createClass(name);
+
+    res.status(201).json({ error: undefined, data: parseForResponse(cls), success: true });
   }
 
   private async enrollStudentToClass(req: Request, res: Response, next: NextFunction) {
@@ -60,17 +56,13 @@ export class ClassesController {
   }
 
   private async getClassAssignments(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      if(!isUUID(id)) {
-        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-      }
-
-      const assignments = await this.classesService.getClassAssignments(id);
-
-      res.status(200).json({ error: undefined, data: parseForResponse(assignments), success: true });
-    } catch (error) {
-      next(error);
+    const { id } = req.params;
+    if(!isUUID(id)) {
+      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
     }
+
+    const assignments = await this.classesService.getClassAssignments(id);
+
+    res.status(200).json({ error: undefined, data: parseForResponse(assignments), success: true });
   }
 }
