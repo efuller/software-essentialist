@@ -49,65 +49,49 @@ export class AssignmentsController {
   }
 
   private async submitAssignment(req: Request, res: Response, next: NextFunction) {
-    try {
-      if (isMissingKeys(req.body, ['id'])) {
-        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-      }
-
-      const { id } = req.body;
-
-      const studentAssignmentUpdated = await this.assignmentsService.submitAssignment(id);
-
-      res.status(200).json({ error: undefined, data: parseForResponse(studentAssignmentUpdated), success: true });
-    } catch (error) {
-      next(error);
+    if (isMissingKeys(req.body, ['id'])) {
+      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
     }
+
+    const { id } = req.body;
+
+    const studentAssignmentUpdated = await this.assignmentsService.submitAssignment(id);
+
+    res.status(200).json({ error: undefined, data: parseForResponse(studentAssignmentUpdated), success: true });
   }
 
   private async assignAssignmentToStudent(req: Request, res: Response, next: NextFunction) {
-    try {
-      if (isMissingKeys(req.body, ['studentId', 'assignmentId'])) {
-        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-      }
-
-      const { studentId, assignmentId, grade } = req.body;
-
-      const studentAssignment = await this.assignmentsService.assignAssignmentToStudent(studentId, assignmentId);
-
-      res.status(201).json({ error: undefined, data: parseForResponse(studentAssignment), success: true });
-    } catch (error) {
-      next(error);
+    if (isMissingKeys(req.body, ['studentId', 'assignmentId'])) {
+      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
     }
+
+    const { studentId, assignmentId, grade } = req.body;
+
+    const studentAssignment = await this.assignmentsService.assignAssignmentToStudent(studentId, assignmentId);
+
+    res.status(201).json({ error: undefined, data: parseForResponse(studentAssignment), success: true });
   }
 
   private async createClassAssignment(req: Request, res: Response, next: NextFunction) {
-    try {
-      if (isMissingKeys(req.body, ['classId', 'title'])) {
-        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-      }
-
-      const { classId, title } = req.body;
-
-      const assignment = await this.assignmentsService.createClassAssignment(classId, title);
-
-      res.status(201).json({ error: undefined, data: parseForResponse(assignment), success: true });
-    } catch (error) {
-      next(error);
+    if (isMissingKeys(req.body, ['classId', 'title'])) {
+      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
     }
+
+    const { classId, title } = req.body;
+
+    const assignment = await this.assignmentsService.createClassAssignment(classId, title);
+
+    res.status(201).json({ error: undefined, data: parseForResponse(assignment), success: true });
   }
 
   private async getAssignmentById(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      if(!isUUID(id)) {
-        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-      }
-
-      const assignment = await this.assignmentsService.getAssignmentById(id);
-
-      res.status(200).json({ error: undefined, data: parseForResponse(assignment), success: true });
-    } catch (error) {
-      next(error);
+    const { id } = req.params;
+    if(!isUUID(id)) {
+      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
     }
+
+    const assignment = await this.assignmentsService.getAssignmentById(id);
+
+    res.status(200).json({ error: undefined, data: parseForResponse(assignment), success: true });
   }
 }
