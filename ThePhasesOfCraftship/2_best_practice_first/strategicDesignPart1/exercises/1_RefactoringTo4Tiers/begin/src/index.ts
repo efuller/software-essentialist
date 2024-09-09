@@ -8,8 +8,10 @@ import { ClassesController } from "./classes.controller";
 import { AssignmentsController } from "./assignments.controller";
 import { AssignmentsService } from "./assignments.service";
 import { ClassesService } from "./classes.service";
+import { StudentService } from "./student.service";
 
-const studentController = new StudentController(errorHandler);
+const studentService = new StudentService();
+const studentController = new StudentController(studentService, errorHandler);
 
 const classesService = new ClassesService();
 const classesController = new ClassesController(classesService, errorHandler);

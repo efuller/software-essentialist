@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
 import { ErrorHandler } from "./errorHandler";
-import { prisma } from "./database";
 import { isMissingKeys, isUUID, parseForResponse } from "./index";
 import { ERROR_EXCEPTION } from "./constants";
 import { ClassesService } from "./classes.service";
