@@ -13,8 +13,8 @@ export class ClassesController {
     private errorHandler: ErrorHandler
   ) {
     this.router = express.Router();
-    this.setupErrorHandler();
     this.setupRoutes();
+    this.setupErrorHandler();
   }
 
   private setupErrorHandler() {
@@ -22,9 +22,9 @@ export class ClassesController {
   }
 
   private setupRoutes() {
-    this.router.post('/classes', this.createClass);
-    this.router.post('/classes/enroll', this.enrollStudentToClass);
-    this.router.get('/classes/:id/assignments', this.getClassAssignments);
+    this.router.post('/classes', this.createClass.bind(this));
+    this.router.post('/classes/enroll', this.enrollStudentToClass.bind(this));
+    this.router.get('/classes/:id/assignments', this.getClassAssignments.bind(this));
   }
 
   public getRouter() {
@@ -48,59 +48,15 @@ export class ClassesController {
   }
 
   private async enrollStudentToClass(req: Request, res: Response, next: NextFunction) {
-    try {
-      if (isMissingKeys(req.body, ['studentId', 'classId'])) {
-        return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-      }
-
-      const { studentId, classId } = req.body;
-
-      // check if student exists
-      const student = await prisma.student.findUnique({
-        where: {
-          id: studentId
-        }
-      });
-
-      if (!student) {
-        return res.status(404).json({ error: ERROR_EXCEPTION.STUDENT_NOT_FOUND, data: undefined, success: false });
-      }
-
-      // check if class exists
-      const cls = await prisma.class.findUnique({
-        where: {
-          id: classId
-        }
-      });
-
-      // check if student is already enrolled in class
-      const duplicatedClassEnrollment = await prisma.classEnrollment.findFirst({
-        where: {
-          studentId,
-          classId
-        }
-      });
-
-      if (duplicatedClassEnrollment) {
-        return res.status(400).json({ error: ERROR_EXCEPTION.STUDENT_ALREADY_ENROLLED, data: undefined, success: false });
-      }
-
-      if (!cls) {
-        return res.status(404).json({ error: ERROR_EXCEPTION.CLASS_NOT_FOUND, data: undefined, success: false });
-      }
-
-      const classEnrollment = await prisma.classEnrollment.create({
-        data: {
-          studentId,
-          classId
-        }
-      });
-
-      res.status(201).json({ error: undefined, data: parseForResponse(classEnrollment), success: true });
-    } catch (error) {
-      next(error);
+    if (isMissingKeys(req.body, ['studentId', 'classId'])) {
+      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
     }
 
+    const { studentId, classId } = req.body;
+
+    const classEnrollment = await this.classesService.enrollStudentToClass(studentId, classId);
+
+    res.status(201).json({ error: undefined, data: parseForResponse(classEnrollment), success: true });
   }
 
   private async getClassAssignments(req: Request, res: Response, next: NextFunction) {
