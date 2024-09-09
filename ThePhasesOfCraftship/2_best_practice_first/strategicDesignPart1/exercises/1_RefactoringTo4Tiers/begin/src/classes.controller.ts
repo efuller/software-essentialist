@@ -66,26 +66,7 @@ export class ClassesController {
         return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
       }
 
-      // check if class exists
-      const cls = await prisma.class.findUnique({
-        where: {
-          id
-        }
-      });
-
-      if (!cls) {
-        return res.status(404).json({ error: ERROR_EXCEPTION.CLASS_NOT_FOUND, data: undefined, success: false });
-      }
-
-      const assignments = await prisma.assignment.findMany({
-        where: {
-          classId: id
-        },
-        include: {
-          class: true,
-          studentTasks: true
-        }
-      });
+      const assignments = await this.classesService.getClassAssignments(id);
 
       res.status(200).json({ error: undefined, data: parseForResponse(assignments), success: true });
     } catch (error) {
