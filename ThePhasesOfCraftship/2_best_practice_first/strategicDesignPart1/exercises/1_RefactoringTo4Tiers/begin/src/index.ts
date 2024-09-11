@@ -9,14 +9,16 @@ import { AssignmentsController } from "./assignments.controller";
 import { AssignmentsService } from "./assignments.service";
 import { ClassesService } from "./classes.service";
 import { StudentService } from "./student.service";
+import { Database, prisma } from "./database";
 
-const studentService = new StudentService();
+const db = new Database(prisma);
+const studentService = new StudentService(db);
 const studentController = new StudentController(studentService, errorHandler);
 
 const classesService = new ClassesService();
 const classesController = new ClassesController(classesService, errorHandler);
 
-const assignmentsService = new AssignmentsService();
+const assignmentsService = new AssignmentsService(db);
 const assignmentsController = new AssignmentsController(
   assignmentsService,
   errorHandler
