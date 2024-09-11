@@ -1,6 +1,6 @@
 import { prisma } from "./database";
 import { ClassNotFoundException, StudentAlreadyEnrolledException, StudentNotFoundException } from "./exceptions";
-import { CreateClassDto } from "./classes.dto";
+import { CreateClassDto, EnrollStudentToClassDto } from "./classes.dto";
 
 export class ClassesService {
   public async createClass(data: CreateClassDto) {
@@ -13,11 +13,11 @@ export class ClassesService {
     return cls;
   }
 
-  public async enrollStudentToClass(studentId: string, classId: string) {
+  public async enrollStudentToClass(data: EnrollStudentToClassDto) {
     // check if student exists
     const student = await prisma.student.findUnique({
       where: {
-        id: studentId
+        id: data.studentId
       }
     });
 
@@ -28,15 +28,15 @@ export class ClassesService {
     // check if class exists
     const cls = await prisma.class.findUnique({
       where: {
-        id: classId
+        id: data.classId
       }
     });
 
     // check if student is already enrolled in class
     const duplicatedClassEnrollment = await prisma.classEnrollment.findFirst({
       where: {
-        studentId,
-        classId
+        studentId: data.studentId,
+        classId: data.classId
       }
     });
 
@@ -50,8 +50,8 @@ export class ClassesService {
 
     const classEnrollment = await prisma.classEnrollment.create({
       data: {
-        studentId,
-        classId
+        studentId: data.studentId,
+        classId: data.classId
       }
     });
     return classEnrollment;
