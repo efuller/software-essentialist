@@ -13,7 +13,7 @@ export type ErrorHandler = (error: Error, req: Request, res: Response, next: Nex
 export function errorHandler(error: Error, req: Request, res: Response, next: NextFunction) {
   if (error instanceof InvalidRequestBodyException) {
     return res.status(400).json({
-      error: ERROR_EXCEPTION.VALIDATION_ERROR,
+      error: ERROR_EXCEPTION.INVALID_REQUEST_BODY,
       data: undefined,
       success: false,
       message: error.message

@@ -3,6 +3,7 @@ import { ErrorHandler } from "./errorHandler";
 import { isMissingKeys, isUUID, parseForResponse } from "./index";
 import { ERROR_EXCEPTION } from "./constants";
 import { ClassesService } from "./classes.service";
+import { CreateClassDto } from "./classes.dto";
 
 export class ClassesController {
   private readonly router: express.Router;
@@ -31,13 +32,9 @@ export class ClassesController {
   }
 
   private async createClass(req: Request, res: Response, next: NextFunction) {
-    if (isMissingKeys(req.body, ['name'])) {
-      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-    }
+    const createClassDto = CreateClassDto.fromRequestBody(req.body);
 
-    const { name } = req.body;
-
-    const cls = await this.classesService.createClass(name);
+    const cls = await this.classesService.createClass(createClassDto);
 
     res.status(201).json({ error: undefined, data: parseForResponse(cls), success: true });
   }
