@@ -21,3 +21,19 @@ export class GradeAssignmentDto {
     return new GradeAssignmentDto(id, grade);
   }
 }
+
+export class SubmitAssignmentDto {
+  private constructor(
+    public readonly id: string
+  ) {}
+
+  public static fromRequestBody(body: any): SubmitAssignmentDto {
+    if (isMissingKeys(body, ['id'])) {
+      throw new InvalidRequestBodyException(['id']);
+    }
+
+    const { id } = body;
+
+    return new SubmitAssignmentDto(id);
+  }
+}
