@@ -1,17 +1,18 @@
 import { Database, prisma } from "./database";
 import { StudentAssignmentNotFoundException, StudentNotFoundException } from "./exceptions";
+import { GradeAssignmentDto } from "./assignments.dto";
 
 export class AssignmentsService {
   constructor(private readonly db: Database) {}
 
-  public async gradeAssignment(id: string, grade: string) {
-    const studentAssignment = await this.db.assignments.getStudentAssignmentById(id);
+  public async gradeAssignment(data: GradeAssignmentDto) {
+    const studentAssignment = await this.db.assignments.getStudentAssignmentById(data.id);
 
     if (!studentAssignment) {
       throw new StudentAssignmentNotFoundException();
     }
 
-    const studentAssignmentUpdated = await this.db.assignments.updateStudentAssignment(id, grade);
+    const studentAssignmentUpdated = await this.db.assignments.updateStudentAssignment(data.id, data.grade);
 
     return studentAssignmentUpdated;
   }
