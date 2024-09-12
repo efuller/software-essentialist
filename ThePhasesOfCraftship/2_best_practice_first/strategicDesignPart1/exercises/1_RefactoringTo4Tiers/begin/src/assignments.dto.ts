@@ -37,3 +37,20 @@ export class SubmitAssignmentDto {
     return new SubmitAssignmentDto(id);
   }
 }
+
+export class AssignAssignmentToStudentDto {
+  private constructor(
+    public readonly studentId: string,
+    public readonly assignmentId: string
+  ) {}
+
+  public static fromRequestBody(body: any): AssignAssignmentToStudentDto {
+    if (isMissingKeys(body, ['studentId', 'assignmentId'])) {
+      throw new InvalidRequestBodyException(['studentId', 'assignmentId']);
+    }
+
+    const { studentId, assignmentId } = body;
+
+    return new AssignAssignmentToStudentDto(studentId, assignmentId);
+  }
+}

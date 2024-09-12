@@ -3,7 +3,7 @@ import { ErrorHandler } from "./errorHandler";
 import { isMissingKeys, isUUID, parseForResponse } from "./index";
 import { ERROR_EXCEPTION } from "./constants";
 import { AssignmentsService } from "./assignments.service";
-import { GradeAssignmentDto, SubmitAssignmentDto } from "./assignments.dto";
+import { AssignAssignmentToStudentDto, GradeAssignmentDto, SubmitAssignmentDto } from "./assignments.dto";
 
 export class AssignmentsController {
   private readonly router: express.Router;
@@ -50,13 +50,9 @@ export class AssignmentsController {
   }
 
   private async assignAssignmentToStudent(req: Request, res: Response, next: NextFunction) {
-    if (isMissingKeys(req.body, ['studentId', 'assignmentId'])) {
-      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-    }
+    const dto = AssignAssignmentToStudentDto.fromRequestBody(req.body);
 
-    const { studentId, assignmentId, grade } = req.body;
-
-    const studentAssignment = await this.assignmentsService.assignAssignmentToStudent(studentId, assignmentId);
+    const studentAssignment = await this.assignmentsService.assignAssignmentToStudent(dto);
 
     res.status(201).json({ error: undefined, data: parseForResponse(studentAssignment), success: true });
   }
