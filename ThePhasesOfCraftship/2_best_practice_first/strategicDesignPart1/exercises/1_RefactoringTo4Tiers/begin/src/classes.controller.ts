@@ -3,7 +3,7 @@ import { ErrorHandler } from "./errorHandler";
 import { isMissingKeys, isUUID, parseForResponse } from "./index";
 import { ERROR_EXCEPTION } from "./constants";
 import { ClassesService } from "./classes.service";
-import { CreateClassDto, EnrollStudentToClassDto } from "./classes.dto";
+import { CreateClassDto, EnrollStudentToClassDto, GetClassAssignmentsDto } from "./classes.dto";
 
 export class ClassesController {
   private readonly router: express.Router;
@@ -48,12 +48,9 @@ export class ClassesController {
   }
 
   private async getClassAssignments(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    if(!isUUID(id)) {
-      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-    }
+    const dto = GetClassAssignmentsDto.fromRequestParams(req.params);
 
-    const assignments = await this.classesService.getClassAssignments(id);
+    const assignments = await this.classesService.getClassAssignments(dto);
 
     res.status(200).json({ error: undefined, data: parseForResponse(assignments), success: true });
   }

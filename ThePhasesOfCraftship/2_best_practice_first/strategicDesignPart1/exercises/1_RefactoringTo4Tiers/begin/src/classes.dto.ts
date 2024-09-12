@@ -1,4 +1,4 @@
-import { isMissingKeys } from "./index";
+import { isMissingKeys, isUUID } from "./index";
 import { InvalidRequestBodyException } from "./exceptions";
 
 export class CreateClassDto {
@@ -24,5 +24,35 @@ export class EnrollStudentToClassDto {
 
     const { studentId, classId } = body as { studentId: string, classId: string };
     return new EnrollStudentToClassDto(studentId, classId);
+  }
+}
+
+interface RequestParams {
+  id?: unknown;
+}
+
+export class GetClassAssignmentsDto {
+  private constructor(public classId: string) {}
+
+  static fromRequestParams(params: unknown): GetClassAssignmentsDto {
+    if (!this.isValidParams(params)) {
+      throw new InvalidRequestBodyException(['id']);
+    }
+
+    if (!isUUID(params.id)) {
+      throw new InvalidRequestBodyException(['id']);
+    }
+
+    const { id } = params;
+    return new GetClassAssignmentsDto(id);
+  }
+
+  private static isValidParams(params: unknown): params is RequestParams & { id: string } {
+    return (
+      params !== null &&
+      typeof params === 'object' &&
+      'id' in params &&
+      typeof params.id === 'string'
+    );
   }
 }

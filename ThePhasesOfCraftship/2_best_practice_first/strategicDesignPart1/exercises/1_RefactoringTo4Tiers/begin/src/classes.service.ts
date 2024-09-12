@@ -1,6 +1,6 @@
 import { prisma } from "./database";
 import { ClassNotFoundException, StudentAlreadyEnrolledException, StudentNotFoundException } from "./exceptions";
-import { CreateClassDto, EnrollStudentToClassDto } from "./classes.dto";
+import { CreateClassDto, EnrollStudentToClassDto, GetClassAssignmentsDto } from "./classes.dto";
 
 export class ClassesService {
   public async createClass(data: CreateClassDto) {
@@ -57,7 +57,8 @@ export class ClassesService {
     return classEnrollment;
   }
 
-  public async getClassAssignments(id: string) {
+  public async getClassAssignments(data: GetClassAssignmentsDto) {
+    const id = data.classId;
     const cls = await prisma.class.findUnique({
       where: {
         id
