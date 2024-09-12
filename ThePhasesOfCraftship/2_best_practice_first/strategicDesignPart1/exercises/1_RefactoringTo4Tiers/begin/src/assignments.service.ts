@@ -1,6 +1,11 @@
 import { Database, prisma } from "./database";
 import { StudentAssignmentNotFoundException, StudentNotFoundException } from "./exceptions";
-import { AssignAssignmentToStudentDto, GradeAssignmentDto, SubmitAssignmentDto } from "./assignments.dto";
+import {
+  AssignAssignmentToStudentDto,
+  CreateClassAssignmentDto,
+  GradeAssignmentDto,
+  SubmitAssignmentDto
+} from "./assignments.dto";
 
 export class AssignmentsService {
   constructor(private readonly db: Database) {}
@@ -47,8 +52,8 @@ export class AssignmentsService {
     return studentAssignment;
   }
 
-  public async createClassAssignment(classId: string, title: string) {
-    const assignment = await this.db.assignments.createClassAssignment(classId, title);
+  public async createClassAssignment(data: CreateClassAssignmentDto) {
+    const assignment = await this.db.assignments.createClassAssignment(data.classId, data.title);
 
     return assignment;
   }

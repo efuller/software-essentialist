@@ -54,3 +54,20 @@ export class AssignAssignmentToStudentDto {
     return new AssignAssignmentToStudentDto(studentId, assignmentId);
   }
 }
+
+export class CreateClassAssignmentDto {
+  private constructor(
+    public readonly classId: string,
+    public readonly title: string
+  ) {}
+
+  public static fromRequestBody(body: any): CreateClassAssignmentDto {
+    if (isMissingKeys(body, ['classId', 'title'])) {
+      throw new InvalidRequestBodyException(['classId', 'title']);
+    }
+
+    const { classId, title } = body;
+
+    return new CreateClassAssignmentDto(classId, title);
+  }
+}
