@@ -1,11 +1,17 @@
 import { Database } from "./database";
 import { StudentNotFoundException } from "./exceptions";
+import {
+  CreateStudentDto,
+  GetStudentByIdDto,
+  GetStudentGradesDto,
+  GetStudentSubmittedAssignmentsDto
+} from "./student.dto";
 
 export class StudentService {
   constructor(private readonly db: Database) {}
 
-  public async createStudent(name: string) {
-    const student = await this.db.student.createStudent(name);
+  public async createStudent(data: CreateStudentDto) {
+    const student = await this.db.student.createStudent(data.name);
 
     return student;
   }
@@ -16,31 +22,31 @@ export class StudentService {
     return students;
   }
 
-  public async getStudentById(id: string) {
-    const student = await this.db.student.getStudentById(id);
+  public async getStudentById(data: GetStudentByIdDto) {
+    const student = await this.db.student.getStudentById(data.id);
 
     return student;
   }
 
-  public async getStudentSubmittedAssignments(id: string) {
-    const student = await this.db.student.getStudentById(id);
+  public async getStudentSubmittedAssignments(data: GetStudentSubmittedAssignmentsDto) {
+    const student = await this.db.student.getStudentById(data.id);
 
     if (!student) {
       throw new StudentNotFoundException();
     }
 
-    const studentAssignments = await this.db.student.getStudentSubmittedAssignments(id);
+    const studentAssignments = await this.db.student.getStudentSubmittedAssignments(data.id);
     return studentAssignments;
   }
 
-  public async getStudentGrades(id: string) {
-    const student = await this.db.student.getStudentById(id);
+  public async getStudentGrades(data: GetStudentGradesDto) {
+    const student = await this.db.student.getStudentById(data.id);
 
     if (!student) {
       throw new StudentNotFoundException();
     }
 
-    const studentGrades = await this.db.student.getStudentGrades(id);
+    const studentGrades = await this.db.student.getStudentGrades(data.id);
     return studentGrades;
   }
 }

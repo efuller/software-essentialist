@@ -4,6 +4,12 @@ import { ErrorHandler } from "./errorHandler";
 import { isMissingKeys, isUUID, parseForResponse } from "./index";
 import { ERROR_EXCEPTION } from "./constants";
 import { StudentService } from "./student.service";
+import {
+  CreateStudentDto,
+  GetStudentByIdDto,
+  GetStudentGradesDto,
+  GetStudentSubmittedAssignmentsDto
+} from "./student.dto";
 
 export class StudentController {
   private readonly router: express.Router;
@@ -34,13 +40,9 @@ export class StudentController {
   }
 
   private async createStudent(req: Request, res: Response, next: NextFunction) {
-    if (isMissingKeys(req.body, ['name'])) {
-      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-    }
+    const dto = CreateStudentDto.fromRequestBody(req.body);
 
-    const { name } = req.body;
-
-    const student = await this.studentService.createStudent(name);
+    const student = await this.studentService.createStudent(dto);
 
     res.status(201).json({ error: undefined, data: parseForResponse(student), success: true });
   }
@@ -51,34 +53,25 @@ export class StudentController {
   }
 
   private async getStudentById(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    if(!isUUID(id)) {
-      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-    }
+    const dto = GetStudentByIdDto.fromRequestParams(req.params);
 
-    const student = await this.studentService.getStudentById(id);
+    const student = await this.studentService.getStudentById(dto);
 
     res.status(200).json({ error: undefined, data: parseForResponse(student), success: true });
   }
 
   private async getStudentSubmittedAssignments(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    if(!isUUID(id)) {
-      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-    }
+    const dto = GetStudentSubmittedAssignmentsDto.fromRequestParams(req.params);
 
-    const studentAssignments = await this.studentService.getStudentSubmittedAssignments(id);
+    const studentAssignments = await this.studentService.getStudentSubmittedAssignments(dto);
 
     res.status(200).json({ error: undefined, data: parseForResponse(studentAssignments), success: true });
   }
 
   private async getStudentGrades(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    if(!isUUID(id)) {
-      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-    }
+    const dto = GetStudentGradesDto.fromRequestParams(req.params);
 
-    const studentAssignments = await this.studentService.getStudentGrades(id);
+    const studentAssignments = await this.studentService.getStudentGrades(dto);
 
     res.status(200).json({ error: undefined, data: parseForResponse(studentAssignments), success: true });
   }
