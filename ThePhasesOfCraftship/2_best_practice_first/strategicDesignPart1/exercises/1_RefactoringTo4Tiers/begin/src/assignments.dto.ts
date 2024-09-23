@@ -3,38 +3,40 @@ import { InvalidRequestBodyException } from "./exceptions";
 
 export class GradeAssignmentDto {
   private constructor(
-    public readonly id: string,
+    public readonly studentId: string,
+    public readonly assignmentId: string,
     public readonly grade: string
   ) {}
 
   public static fromRequestBody(body: any): GradeAssignmentDto {
-    if (isMissingKeys(body, ['id', 'grade'])) {
-      throw new InvalidRequestBodyException(['id', 'grade']);
+    if (isMissingKeys(body, ['studentId', 'assignmentId', 'grade'])) {
+      throw new InvalidRequestBodyException(['studentId', 'assignmentId', 'grade']);
     }
 
-    const { id, grade } = body;
+    const { studentId, assignmentId, grade } = body;
 
     if (!['A', 'B', 'C', 'D'].includes(grade)) {
       throw new InvalidRequestBodyException(['grade']);
     }
 
-    return new GradeAssignmentDto(id, grade);
+    return new GradeAssignmentDto(studentId, assignmentId, grade);
   }
 }
 
 export class SubmitAssignmentDto {
   private constructor(
-    public readonly id: string
+    public readonly studentId: string,
+    public readonly assignmentId: string
   ) {}
 
   public static fromRequestBody(body: any): SubmitAssignmentDto {
-    if (isMissingKeys(body, ['id'])) {
-      throw new InvalidRequestBodyException(['id']);
+    if (isMissingKeys(body, ['studentId', 'assignmentId'])) {
+      throw new InvalidRequestBodyException(['studentId', 'assignmentId']);
     }
 
-    const { id } = body;
+    const { studentId, assignmentId } = body;
 
-    return new SubmitAssignmentDto(id);
+    return new SubmitAssignmentDto(studentId, assignmentId);
   }
 }
 

@@ -17,7 +17,7 @@ interface AssignmentsPersistence {
   assignAssignmentToStudent(studentId: string, assignmentId: string): any
   submitStudentAssignment(id: string): any;
   updateStudentAssignment(id: string, grade: string): any;
-  getStudentAssignmentById(id: string): any;
+  getStudentAssignmentById(studentId: string, assignmentId: string): any;
 }
 
 export class Database {
@@ -106,10 +106,11 @@ export class Database {
     return studentAssignmentUpdated;
   }
 
-  public async getStudentAssignmentById(id: string) {
-    const studentAssignment = await prisma.studentAssignment.findUnique({
+  public async getStudentAssignmentById(studentId: string, assignmentId: string) {
+    const studentAssignment = await prisma.studentAssignment.findFirst({
       where: {
-        id
+        studentId,
+        assignmentId
       }
     });
     return studentAssignment;

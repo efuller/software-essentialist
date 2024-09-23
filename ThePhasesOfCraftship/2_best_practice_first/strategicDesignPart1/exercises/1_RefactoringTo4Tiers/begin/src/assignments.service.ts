@@ -11,25 +11,27 @@ export class AssignmentsService {
   constructor(private readonly db: Database) {}
 
   public async gradeAssignment(data: GradeAssignmentDto) {
-    const studentAssignment = await this.db.assignments.getStudentAssignmentById(data.id);
+    const { studentId, assignmentId, grade } = data;
+    const studentAssignment = await this.db.assignments.getStudentAssignmentById(studentId, assignmentId);
 
     if (!studentAssignment) {
       throw new StudentAssignmentNotFoundException();
     }
 
-    const studentAssignmentUpdated = await this.db.assignments.updateStudentAssignment(data.id, data.grade);
+    const studentAssignmentUpdated = await this.db.assignments.updateStudentAssignment(studentAssignment.id, grade);
 
     return studentAssignmentUpdated;
   }
 
   public async submitAssignment(data: SubmitAssignmentDto) {
-    const studentAssignment = await this.db.assignments.getStudentAssignmentById(data.id);
+    const { studentId, assignmentId } = data;
+    const studentAssignment = await this.db.assignments.getStudentAssignmentById(studentId, assignmentId);
 
     if (!studentAssignment) {
       throw new StudentAssignmentNotFoundException();
     }
 
-    const studentAssignmentUpdated = await this.db.assignments.submitStudentAssignment(data.id);
+    const studentAssignmentUpdated = await this.db.assignments.submitStudentAssignment(studentAssignment.id);
 
     return studentAssignmentUpdated;
   }
