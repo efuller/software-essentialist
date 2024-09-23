@@ -1,11 +1,10 @@
 import express, { Request, Response, NextFunction } from "express";
 import { ErrorHandler } from "./errorHandler";
-import { isMissingKeys, isUUID, parseForResponse } from "./index";
-import { ERROR_EXCEPTION } from "./constants";
+import { parseForResponse } from "./index";
 import { AssignmentsService } from "./assignments.service";
 import {
   AssignAssignmentToStudentDto,
-  CreateClassAssignmentDto,
+  CreateClassAssignmentDto, GetAssignmentByIdDto,
   GradeAssignmentDto,
   SubmitAssignmentDto
 } from "./assignments.dto";
@@ -71,12 +70,9 @@ export class AssignmentsController {
   }
 
   private async getAssignmentById(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    if(!isUUID(id)) {
-      return res.status(400).json({ error: ERROR_EXCEPTION.VALIDATION_ERROR, data: undefined, success: false });
-    }
+    const dto = GetAssignmentByIdDto.fromRequestParams(req.params);
 
-    const assignment = await this.assignmentsService.getAssignmentById(id);
+    const assignment = await this.assignmentsService.getAssignmentById(dto.id);
 
     res.status(200).json({ error: undefined, data: parseForResponse(assignment), success: true });
   }

@@ -1,5 +1,25 @@
-import { isMissingKeys } from "./index";
+import { isMissingKeys, isUUID } from "./index";
 import { InvalidRequestBodyException } from "./exceptions";
+
+export class GetAssignmentByIdDto {
+  private constructor(
+    public readonly id: string
+  ) {}
+
+  public static fromRequestParams(params: any): GetAssignmentByIdDto {
+    if (isMissingKeys(params, ['id'])) {
+      throw new InvalidRequestBodyException(['id']);
+    }
+
+    const { id } = params;
+
+    if(!isUUID(id)) {
+      throw new InvalidRequestBodyException(['id']);
+    }
+
+    return new GetAssignmentByIdDto(id);
+  }
+}
 
 export class GradeAssignmentDto {
   private constructor(
