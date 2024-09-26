@@ -23,7 +23,7 @@ export class GetStudentByIdDto {
     public readonly id: string
   ) {}
 
-  public static fromRequestParams(params: any): GetStudentByIdDto {
+  public static fromRequestParams(params: unknown): GetStudentByIdDto {
     if (!this.isValidParams(params)) {
       throw new InvalidRequestBodyException(['id']);
     }
