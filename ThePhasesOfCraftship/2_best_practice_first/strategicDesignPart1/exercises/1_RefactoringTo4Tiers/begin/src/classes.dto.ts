@@ -1,6 +1,32 @@
 import { isMissingKeys, isUUID } from "./index";
 import { InvalidRequestBodyException } from "./exceptions";
 
+export class GetClassByIdDto {
+  private constructor(public id: string) {}
+
+  static fromRequestParams(params: unknown): GetClassByIdDto {
+    if (!this.isValidParams(params)) {
+      throw new InvalidRequestBodyException(['id']);
+    }
+
+    if (!isUUID(params.id)) {
+      throw new InvalidRequestBodyException(['id']);
+    }
+
+    const { id } = params;
+    return new GetClassByIdDto(id);
+  }
+
+  private static isValidParams(params: unknown): params is RequestParams & { id: string } {
+    return (
+      params !== null &&
+      typeof params === 'object' &&
+      'id' in params &&
+      typeof params.id === 'string'
+    );
+  }
+}
+
 export class CreateClassDto {
   private constructor(public name: string) {}
 

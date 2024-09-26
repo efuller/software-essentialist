@@ -1,4 +1,5 @@
-import { PrismaClient, Student } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import { ClassNotFoundException, StudentAlreadyEnrolledException, StudentNotFoundException } from "./exceptions";
 
 export const prisma = new PrismaClient();
 
@@ -8,6 +9,7 @@ interface StudentPersistence {
   getStudentById(id: string): any;
   getStudentSubmittedAssignments(id: string): any;
   getStudentGrades(id: string): any;
+  isStudentEnrolledInClass(studentId: string, classId: string): any;
 }
 
 interface AssignmentsPersistence {
@@ -20,9 +22,17 @@ interface AssignmentsPersistence {
   getStudentAssignmentById(studentId: string, assignmentId: string): any;
 }
 
+interface ClassesPersistence {
+  createClass(name: string): any;
+  enrollStudentToClass(studentId: string, classId: string): any;
+  getClassAssignments(classId: string): any;
+  getClassById(id: string): any;
+}
+
 export class Database {
   public student: StudentPersistence;
   public assignments: AssignmentsPersistence;
+  public classes: ClassesPersistence;
 
   constructor(private readonly prismaClient: PrismaClient) {
     this.student = {
@@ -30,7 +40,8 @@ export class Database {
       getAllStudents: this.getAllStudents.bind(this),
       getStudentById: this.getStudentById.bind(this),
       getStudentSubmittedAssignments: this.getStudentSubmittedAssignments.bind(this),
-      getStudentGrades: this.getStudentGrades.bind(this)
+      getStudentGrades: this.getStudentGrades.bind(this),
+      isStudentEnrolledInClass: this.isStudentEnrolledInClass.bind(this)
     }
 
     this.assignments = {
@@ -42,6 +53,77 @@ export class Database {
       updateStudentAssignment: this.updateStudentAssignment.bind(this),
       getStudentAssignmentById: this.getStudentAssignmentById.bind(this)
     }
+
+    this.classes = {
+      createClass: this.createClass.bind(this),
+      enrollStudentToClass: this.enrollStudentToClass.bind(this),
+      getClassAssignments: this.getClassAssignments.bind(this),
+      getClassById: this.getClassById.bind(this)
+    }
+  }
+
+  public async isStudentEnrolledInClass(studentId: string, classId: string) {
+    const classEnrollment = await prisma.classEnrollment.findFirst({
+      where: {
+        studentId,
+        classId
+      }
+    });
+
+    return !!classEnrollment;
+  }
+
+  public async getClassById(id: string) {
+    const cls = await prisma.class.findUnique({
+      where: {
+        id
+      }
+    });
+
+    return cls;
+  }
+
+  public async createClass(name: string) {
+    const cls = await prisma.class.create({
+      data: {
+        name
+      }
+    });
+
+    return cls;
+  }
+
+  public async enrollStudentToClass(studentId: string, classId: string) {
+    const classEnrollment = await prisma.classEnrollment.create({
+      data: {
+        studentId,
+        classId
+      }
+    });
+    return classEnrollment;
+  }
+
+  public async getClassAssignments(classId: string) {
+    const cls = await prisma.class.findUnique({
+      where: {
+        id: classId
+      }
+    });
+
+    if (!cls) {
+      throw new ClassNotFoundException();
+    }
+
+    const assignments = await prisma.assignment.findMany({
+      where: {
+        classId
+      },
+      include: {
+        class: true,
+        studentTasks: true
+      }
+    });
+    return assignments;
   }
 
   public async getAssignmentById(id: string) {

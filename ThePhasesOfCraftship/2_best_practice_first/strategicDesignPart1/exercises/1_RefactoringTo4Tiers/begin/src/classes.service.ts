@@ -1,83 +1,58 @@
-import { prisma } from "./database";
+import { Database, prisma } from "./database";
 import { ClassNotFoundException, StudentAlreadyEnrolledException, StudentNotFoundException } from "./exceptions";
-import { CreateClassDto, EnrollStudentToClassDto, GetClassAssignmentsDto } from "./classes.dto";
+import { CreateClassDto, EnrollStudentToClassDto, GetClassAssignmentsDto, GetClassByIdDto } from "./classes.dto";
 
 export class ClassesService {
+  constructor(private readonly db: Database) {}
+
+  public async getClassById(data: GetClassByIdDto) {
+    const cls = await this.db.classes.getClassById(data.id);
+
+    if (!cls) {
+      throw new ClassNotFoundException();
+    }
+
+    return cls;
+  }
+
   public async createClass(data: CreateClassDto) {
-    const cls = await prisma.class.create({
-      data: {
-        name: data.name
-      }
-    });
+    const cls = await this.db.classes.createClass(data.name);
 
     return cls;
   }
 
   public async enrollStudentToClass(data: EnrollStudentToClassDto) {
-    // check if student exists
-    const student = await prisma.student.findUnique({
-      where: {
-        id: data.studentId
-      }
-    });
+    const student = await this.db.student.getStudentById(data.studentId);
 
     if (!student) {
       throw new StudentNotFoundException();
     }
 
-    // check if class exists
-    const cls = await prisma.class.findUnique({
-      where: {
-        id: data.classId
-      }
-    });
+    const cls = await this.db.classes.getClassById(data.classId);
 
-    // check if student is already enrolled in class
-    const duplicatedClassEnrollment = await prisma.classEnrollment.findFirst({
-      where: {
-        studentId: data.studentId,
-        classId: data.classId
-      }
-    });
+    if (!cls) {
+      throw new ClassNotFoundException();
+    }
+
+    const duplicatedClassEnrollment = await this.db.student.isStudentEnrolledInClass(data.studentId, data.classId);
 
     if (duplicatedClassEnrollment) {
       throw new StudentAlreadyEnrolledException();
     }
 
-    if (!cls) {
-      throw new ClassNotFoundException();
-    }
-
-    const classEnrollment = await prisma.classEnrollment.create({
-      data: {
-        studentId: data.studentId,
-        classId: data.classId
-      }
-    });
+    const classEnrollment = await this.db.classes.enrollStudentToClass(data.studentId, data.classId);
     return classEnrollment;
   }
 
   public async getClassAssignments(data: GetClassAssignmentsDto) {
     const id = data.classId;
-    const cls = await prisma.class.findUnique({
-      where: {
-        id
-      }
-    });
+    const cls = await this.db.classes.getClassById(id);
 
     if (!cls) {
       throw new ClassNotFoundException();
     }
 
-    const assignments = await prisma.assignment.findMany({
-      where: {
-        classId: id
-      },
-      include: {
-        class: true,
-        studentTasks: true
-      }
-    });
+    const assignments = await this.db.classes.getClassAssignments(id);
     return assignments;
   }
 }

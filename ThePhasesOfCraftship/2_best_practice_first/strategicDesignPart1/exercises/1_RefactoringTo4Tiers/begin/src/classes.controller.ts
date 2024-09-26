@@ -1,9 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 import { ErrorHandler } from "./errorHandler";
-import { isMissingKeys, isUUID, parseForResponse } from "./index";
-import { ERROR_EXCEPTION } from "./constants";
+import { parseForResponse } from "./index";
 import { ClassesService } from "./classes.service";
-import { CreateClassDto, EnrollStudentToClassDto, GetClassAssignmentsDto } from "./classes.dto";
+import { CreateClassDto, EnrollStudentToClassDto, GetClassAssignmentsDto, GetClassByIdDto } from "./classes.dto";
 
 export class ClassesController {
   private readonly router: express.Router;
@@ -22,6 +21,7 @@ export class ClassesController {
   }
 
   private setupRoutes() {
+    this.router.get('/classes/:id', this.getClassById.bind(this));
     this.router.post('/classes', this.createClass.bind(this));
     this.router.post('/classes/enroll', this.enrollStudentToClass.bind(this));
     this.router.get('/classes/:id/assignments', this.getClassAssignments.bind(this));
@@ -29,6 +29,14 @@ export class ClassesController {
 
   public getRouter() {
     return this.router;
+  }
+
+  private async getClassById(req: Request, res: Response) {
+    const dto = GetClassByIdDto.fromRequestParams(req.params);
+
+    const cls = await this.classesService.getClassById(dto);
+
+    res.status(200).json({ error: undefined, data: parseForResponse(cls), success: true });
   }
 
   private async createClass(req: Request, res: Response, next: NextFunction) {

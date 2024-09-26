@@ -15,7 +15,7 @@ const db = new Database(prisma);
 const studentService = new StudentService(db);
 const studentController = new StudentController(studentService, errorHandler);
 
-const classesService = new ClassesService();
+const classesService = new ClassesService(db);
 const classesController = new ClassesController(classesService, errorHandler);
 
 const assignmentsService = new AssignmentsService(db);
