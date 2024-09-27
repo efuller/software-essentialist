@@ -1,5 +1,5 @@
-import { Database } from "../../database";
-import { StudentAssignmentNotFoundException, StudentNotFoundException } from "../../exceptions";
+import { Database } from "../../shared/database";
+import { StudentAssignmentNotFoundException, StudentNotFoundException } from "../../shared/exceptions";
 import {
   AssignAssignmentToStudentDto,
   CreateClassAssignmentDto,

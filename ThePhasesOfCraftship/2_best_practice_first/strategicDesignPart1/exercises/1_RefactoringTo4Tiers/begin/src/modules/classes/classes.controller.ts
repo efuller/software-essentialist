@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { ErrorHandler } from "../../errorHandler";
+import { ErrorHandler } from "../../shared/errorHandler";
 import { parseForResponse } from "../../index";
 import { ClassesService } from "./classes.service";
 import { CreateClassDto, EnrollStudentToClassDto, GetClassAssignmentsDto, GetClassByIdDto } from "./classes.dto";
