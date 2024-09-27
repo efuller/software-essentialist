@@ -1,5 +1,5 @@
-import { Database, prisma } from "./database";
-import { ClassNotFoundException, StudentAlreadyEnrolledException, StudentNotFoundException } from "./exceptions";
+import { Database, prisma } from "../../database";
+import { ClassNotFoundException, StudentAlreadyEnrolledException, StudentNotFoundException } from "../../exceptions";
 import { CreateClassDto, EnrollStudentToClassDto, GetClassAssignmentsDto, GetClassByIdDto } from "./classes.dto";
 
 export class ClassesService {
