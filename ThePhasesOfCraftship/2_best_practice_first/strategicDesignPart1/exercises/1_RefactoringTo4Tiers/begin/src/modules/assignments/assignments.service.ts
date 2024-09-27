@@ -1,5 +1,5 @@
-import { Database, prisma } from "./database";
-import { StudentAssignmentNotFoundException, StudentNotFoundException } from "./exceptions";
+import { Database } from "../../database";
+import { StudentAssignmentNotFoundException, StudentNotFoundException } from "../../exceptions";
 import {
   AssignAssignmentToStudentDto,
   CreateClassAssignmentDto,

@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
-import { ErrorHandler } from "./errorHandler";
-import { parseForResponse } from "./index";
+import { ErrorHandler } from "../../errorHandler";
+import { parseForResponse } from "../../index";
 import { AssignmentsService } from "./assignments.service";
 import {
   AssignAssignmentToStudentDto,
