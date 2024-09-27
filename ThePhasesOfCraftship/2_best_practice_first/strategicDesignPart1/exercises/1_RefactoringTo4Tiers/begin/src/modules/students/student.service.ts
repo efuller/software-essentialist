@@ -1,5 +1,5 @@
-import { Database } from "./database";
-import { StudentNotFoundException } from "./exceptions";
+import { Database } from "../../database";
+import { StudentNotFoundException } from "../../exceptions";
 import {
   CreateStudentDto,
   GetStudentByIdDto,

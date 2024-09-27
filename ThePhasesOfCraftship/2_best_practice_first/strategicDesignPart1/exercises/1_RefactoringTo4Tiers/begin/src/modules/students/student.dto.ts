@@ -1,5 +1,5 @@
-import { isMissingKeys, isUUID } from "./index";
-import { InvalidRequestBodyException } from "./exceptions";
+import { isMissingKeys, isUUID } from "../../index";
+import { InvalidRequestBodyException } from "../../exceptions";
 
 export class CreateStudentDto {
   private constructor(

@@ -1,7 +1,7 @@
 import express, { Response, Request, NextFunction } from "express";
 
-import { ErrorHandler } from "./errorHandler";
-import { parseForResponse } from "./index";
+import { ErrorHandler } from "../../errorHandler";
+import { parseForResponse } from "../../index";
 import { StudentService } from "./student.service";
 import {
   CreateStudentDto,

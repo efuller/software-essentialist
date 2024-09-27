@@ -2,13 +2,13 @@ import express, { Request, Response } from 'express';
 const cors = require('cors');
 import 'express-async-errors';
 
-import { StudentController } from "./student.controller";
+import { StudentController } from "./modules/students/student.controller";
 import { errorHandler } from './errorHandler';
 import { ClassesController } from "./modules/classes/classes.controller";
 import { AssignmentsController } from "./modules/assignments/assignments.controller";
 import { AssignmentsService } from "./modules/assignments/assignments.service";
 import { ClassesService } from "./modules/classes/classes.service";
-import { StudentService } from "./student.service";
+import { StudentService } from "./modules/students/student.service";
 import { Database, prisma } from "./database";
 
 const db = new Database(prisma);
