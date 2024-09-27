@@ -1,5 +1,6 @@
-import { isMissingKeys, isUUID } from "../../index";
 import { InvalidRequestBodyException } from "../../shared/exceptions";
+import { ObjectUtils } from "../../shared/objectUtils";
+import { StringUtils } from "../../shared/stringUtils";
 
 export class CreateStudentDto {
   private constructor(
@@ -7,7 +8,7 @@ export class CreateStudentDto {
   ) {}
 
   public static fromRequestBody(body: any): CreateStudentDto {
-    if (isMissingKeys(body, ['name'])) {
+    if (ObjectUtils.isMissingKeys(body, ['name'])) {
       throw new InvalidRequestBodyException(['name']);
     }
     return new CreateStudentDto(body.name);
@@ -28,7 +29,7 @@ export class GetStudentByIdDto {
       throw new InvalidRequestBodyException(['id']);
     }
 
-    if (!isUUID(params.id)) {
+    if (!StringUtils.isUUID(params.id)) {
       throw new InvalidRequestBodyException(['id']);
     }
 
@@ -55,7 +56,7 @@ export class GetStudentSubmittedAssignmentsDto {
       throw new InvalidRequestBodyException(['id']);
     }
 
-    if (!isUUID(params.id)) {
+    if (!StringUtils.isUUID(params.id)) {
       throw new InvalidRequestBodyException(['id']);
     }
 
@@ -82,7 +83,7 @@ export class GetStudentGradesDto {
       throw new InvalidRequestBodyException(['id']);
     }
 
-    if (!isUUID(params.id)) {
+    if (!StringUtils.isUUID(params.id)) {
       throw new InvalidRequestBodyException(['id']);
     }
 

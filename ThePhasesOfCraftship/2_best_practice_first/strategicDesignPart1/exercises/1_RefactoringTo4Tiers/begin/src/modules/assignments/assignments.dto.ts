@@ -1,5 +1,6 @@
-import { isMissingKeys, isUUID } from "../../index";
 import { InvalidRequestBodyException } from "../../shared/exceptions";
+import { ObjectUtils } from "../../shared/objectUtils";
+import { StringUtils } from "../../shared/stringUtils";
 
 export class GetAssignmentByIdDto {
   private constructor(
@@ -7,13 +8,13 @@ export class GetAssignmentByIdDto {
   ) {}
 
   public static fromRequestParams(params: any): GetAssignmentByIdDto {
-    if (isMissingKeys(params, ['id'])) {
+    if (ObjectUtils.isMissingKeys(params, ['id'])) {
       throw new InvalidRequestBodyException(['id']);
     }
 
     const { id } = params;
 
-    if(!isUUID(id)) {
+    if(!StringUtils.isUUID(id)) {
       throw new InvalidRequestBodyException(['id']);
     }
 
@@ -29,7 +30,7 @@ export class GradeAssignmentDto {
   ) {}
 
   public static fromRequestBody(body: any): GradeAssignmentDto {
-    if (isMissingKeys(body, ['studentId', 'assignmentId', 'grade'])) {
+    if (ObjectUtils.isMissingKeys(body, ['studentId', 'assignmentId', 'grade'])) {
       throw new InvalidRequestBodyException(['studentId', 'assignmentId', 'grade']);
     }
 
@@ -50,7 +51,7 @@ export class SubmitAssignmentDto {
   ) {}
 
   public static fromRequestBody(body: any): SubmitAssignmentDto {
-    if (isMissingKeys(body, ['studentId', 'assignmentId'])) {
+    if (ObjectUtils.isMissingKeys(body, ['studentId', 'assignmentId'])) {
       throw new InvalidRequestBodyException(['studentId', 'assignmentId']);
     }
 
@@ -67,7 +68,7 @@ export class AssignAssignmentToStudentDto {
   ) {}
 
   public static fromRequestBody(body: any): AssignAssignmentToStudentDto {
-    if (isMissingKeys(body, ['studentId', 'assignmentId'])) {
+    if (ObjectUtils.isMissingKeys(body, ['studentId', 'assignmentId'])) {
       throw new InvalidRequestBodyException(['studentId', 'assignmentId']);
     }
 
@@ -84,7 +85,7 @@ export class CreateClassAssignmentDto {
   ) {}
 
   public static fromRequestBody(body: any): CreateClassAssignmentDto {
-    if (isMissingKeys(body, ['classId', 'title'])) {
+    if (ObjectUtils.isMissingKeys(body, ['classId', 'title'])) {
       throw new InvalidRequestBodyException(['classId', 'title']);
     }
 
