@@ -1,8 +1,7 @@
 import express, { Response, Request, NextFunction } from "express";
 
 import { ErrorHandler } from "./errorHandler";
-import { isMissingKeys, isUUID, parseForResponse } from "./index";
-import { ERROR_EXCEPTION } from "./constants";
+import { parseForResponse } from "./index";
 import { StudentService } from "./student.service";
 import {
   CreateStudentDto,
