@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 import { ErrorHandler } from "../../shared/errorHandler";
-import { parseForResponse } from "../../index";
 import { ClassesService } from "./classes.service";
 import { CreateClassDto, EnrollStudentToClassDto, GetClassAssignmentsDto, GetClassByIdDto } from "./classes.dto";
+import { ObjectUtils } from "../../shared/objectUtils";
 
 export class ClassesController {
   private readonly router: express.Router;
@@ -36,7 +36,7 @@ export class ClassesController {
 
     const cls = await this.classesService.getClassById(dto);
 
-    res.status(200).json({ error: undefined, data: parseForResponse(cls), success: true });
+    res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(cls), success: true });
   }
 
   private async createClass(req: Request, res: Response, next: NextFunction) {
@@ -44,7 +44,7 @@ export class ClassesController {
 
     const cls = await this.classesService.createClass(createClassDto);
 
-    res.status(201).json({ error: undefined, data: parseForResponse(cls), success: true });
+    res.status(201).json({ error: undefined, data: ObjectUtils.parseForResponse(cls), success: true });
   }
 
   private async enrollStudentToClass(req: Request, res: Response, next: NextFunction) {
@@ -52,7 +52,7 @@ export class ClassesController {
 
     const classEnrollment = await this.classesService.enrollStudentToClass(dto);
 
-    res.status(201).json({ error: undefined, data: parseForResponse(classEnrollment), success: true });
+    res.status(201).json({ error: undefined, data: ObjectUtils.parseForResponse(classEnrollment), success: true });
   }
 
   private async getClassAssignments(req: Request, res: Response, next: NextFunction) {
@@ -60,6 +60,6 @@ export class ClassesController {
 
     const assignments = await this.classesService.getClassAssignments(dto);
 
-    res.status(200).json({ error: undefined, data: parseForResponse(assignments), success: true });
+    res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(assignments), success: true });
   }
 }

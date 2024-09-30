@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
 import { ErrorHandler } from "../../shared/errorHandler";
-import { parseForResponse } from "../../index";
 import { AssignmentsService } from "./assignments.service";
 import {
   AssignAssignmentToStudentDto,
@@ -8,6 +7,7 @@ import {
   GradeAssignmentDto,
   SubmitAssignmentDto
 } from "./assignments.dto";
+import { ObjectUtils } from "../../shared/objectUtils";
 
 export class AssignmentsController {
   private readonly router: express.Router;
@@ -42,7 +42,7 @@ export class AssignmentsController {
 
     const response = await this.assignmentsService.gradeAssignment(dto);
 
-    res.status(200).json({ error: undefined, data: parseForResponse(response), success: true });
+    res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(response), success: true });
   }
 
   private async submitAssignment(req: Request, res: Response, next: NextFunction) {
@@ -50,7 +50,7 @@ export class AssignmentsController {
 
     const studentAssignmentUpdated = await this.assignmentsService.submitAssignment(dto);
 
-    res.status(200).json({ error: undefined, data: parseForResponse(studentAssignmentUpdated), success: true });
+    res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(studentAssignmentUpdated), success: true });
   }
 
   private async assignAssignmentToStudent(req: Request, res: Response, next: NextFunction) {
@@ -58,7 +58,7 @@ export class AssignmentsController {
 
     const studentAssignment = await this.assignmentsService.assignAssignmentToStudent(dto);
 
-    res.status(201).json({ error: undefined, data: parseForResponse(studentAssignment), success: true });
+    res.status(201).json({ error: undefined, data: ObjectUtils.parseForResponse(studentAssignment), success: true });
   }
 
   private async createClassAssignment(req: Request, res: Response, next: NextFunction) {
@@ -66,7 +66,7 @@ export class AssignmentsController {
 
     const assignment = await this.assignmentsService.createClassAssignment(dto);
 
-    res.status(201).json({ error: undefined, data: parseForResponse(assignment), success: true });
+    res.status(201).json({ error: undefined, data: ObjectUtils.parseForResponse(assignment), success: true });
   }
 
   private async getAssignmentById(req: Request, res: Response, next: NextFunction) {
@@ -74,6 +74,6 @@ export class AssignmentsController {
 
     const assignment = await this.assignmentsService.getAssignmentById(dto.id);
 
-    res.status(200).json({ error: undefined, data: parseForResponse(assignment), success: true });
+    res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(assignment), success: true });
   }
 }

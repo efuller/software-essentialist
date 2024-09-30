@@ -5,4 +5,8 @@ export class ObjectUtils {
     }
     return false;
   }
+
+  public static parseForResponse(data: unknown) {
+    return JSON.parse(JSON.stringify(data));
+  }
 }

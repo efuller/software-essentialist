@@ -28,10 +28,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-export function parseForResponse(data: unknown) {
-    return JSON.parse(JSON.stringify(data));
-}
-
 app.use(studentController.getRouter());
 app.use(classesController.getRouter());
 app.use(assignmentsController.getRouter());

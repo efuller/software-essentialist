@@ -1,7 +1,6 @@
 import express, { Response, Request, NextFunction } from "express";
 
 import { ErrorHandler } from "../../shared/errorHandler";
-import { parseForResponse } from "../../index";
 import { StudentService } from "./student.service";
 import {
   CreateStudentDto,
@@ -9,6 +8,7 @@ import {
   GetStudentGradesDto,
   GetStudentSubmittedAssignmentsDto
 } from "./student.dto";
+import { ObjectUtils } from "../../shared/objectUtils";
 
 export class StudentController {
   private readonly router: express.Router;
@@ -43,12 +43,12 @@ export class StudentController {
 
     const student = await this.studentService.createStudent(dto);
 
-    res.status(201).json({ error: undefined, data: parseForResponse(student), success: true });
+    res.status(201).json({ error: undefined, data: ObjectUtils.parseForResponse(student), success: true });
   }
 
   private async getAllStudents(req: Request, res: Response, next: NextFunction) {
     const students = await this.studentService.getAllStudents();
-    res.status(200).json({ error: undefined, data: parseForResponse(students), success: true });
+    res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(students), success: true });
   }
 
   private async getStudentById(req: Request, res: Response, next: NextFunction) {
@@ -56,7 +56,7 @@ export class StudentController {
 
     const student = await this.studentService.getStudentById(dto);
 
-    res.status(200).json({ error: undefined, data: parseForResponse(student), success: true });
+    res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(student), success: true });
   }
 
   private async getStudentSubmittedAssignments(req: Request, res: Response, next: NextFunction) {
@@ -64,7 +64,7 @@ export class StudentController {
 
     const studentAssignments = await this.studentService.getStudentSubmittedAssignments(dto);
 
-    res.status(200).json({ error: undefined, data: parseForResponse(studentAssignments), success: true });
+    res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(studentAssignments), success: true });
   }
 
   private async getStudentGrades(req: Request, res: Response, next: NextFunction) {
@@ -72,6 +72,6 @@ export class StudentController {
 
     const studentAssignments = await this.studentService.getStudentGrades(dto);
 
-    res.status(200).json({ error: undefined, data: parseForResponse(studentAssignments), success: true });
+    res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(studentAssignments), success: true });
   }
 }
