@@ -5,8 +5,8 @@ import { ObjectUtils } from "../../shared/objectUtils";
 export class GetClassByIdDto {
   private constructor(public id: string) {}
 
-  static fromRequestParams(params: unknown): GetClassByIdDto {
-    if (!this.isValidParams(params)) {
+  static fromRequestParams(params: any): GetClassByIdDto {
+    if (ObjectUtils.isMissingKeys(params, ['id'])) {
       throw new InvalidRequestBodyException(['id']);
     }
 
@@ -16,15 +16,6 @@ export class GetClassByIdDto {
 
     const { id } = params;
     return new GetClassByIdDto(id);
-  }
-
-  private static isValidParams(params: unknown): params is RequestParams & { id: string } {
-    return (
-      params !== null &&
-      typeof params === 'object' &&
-      'id' in params &&
-      typeof params.id === 'string'
-    );
   }
 }
 
@@ -54,15 +45,11 @@ export class EnrollStudentToClassDto {
   }
 }
 
-interface RequestParams {
-  id?: unknown;
-}
-
 export class GetClassAssignmentsDto {
   private constructor(public classId: string) {}
 
-  static fromRequestParams(params: unknown): GetClassAssignmentsDto {
-    if (!this.isValidParams(params)) {
+  static fromRequestParams(params: any): GetClassAssignmentsDto {
+    if (ObjectUtils.isMissingKeys(params, ['id'])) {
       throw new InvalidRequestBodyException(['id']);
     }
 
@@ -72,14 +59,5 @@ export class GetClassAssignmentsDto {
 
     const { id } = params;
     return new GetClassAssignmentsDto(id);
-  }
-
-  private static isValidParams(params: unknown): params is RequestParams & { id: string } {
-    return (
-      params !== null &&
-      typeof params === 'object' &&
-      'id' in params &&
-      typeof params.id === 'string'
-    );
   }
 }

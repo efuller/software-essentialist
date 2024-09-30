@@ -15,17 +15,13 @@ export class CreateStudentDto {
   }
 }
 
-interface RequestParams {
-  id?: unknown;
-}
-
 export class GetStudentByIdDto {
   private constructor(
     public readonly id: string
   ) {}
 
-  public static fromRequestParams(params: unknown): GetStudentByIdDto {
-    if (!this.isValidParams(params)) {
+  public static fromRequestParams(params: any): GetStudentByIdDto {
+    if (ObjectUtils.isMissingKeys(params, ['id'])) {
       throw new InvalidRequestBodyException(['id']);
     }
 
@@ -35,15 +31,6 @@ export class GetStudentByIdDto {
 
     return new GetStudentByIdDto(params.id);
   }
-
-  private static isValidParams(params: unknown): params is RequestParams & { id: string } {
-    return (
-      params !== null &&
-      typeof params === 'object' &&
-      'id' in params &&
-      typeof params.id === 'string'
-    );
-  }
 }
 
 export class GetStudentSubmittedAssignmentsDto {
@@ -52,7 +39,7 @@ export class GetStudentSubmittedAssignmentsDto {
   ) {}
 
   public static fromRequestParams(params: any): GetStudentSubmittedAssignmentsDto {
-    if (!this.isValidParams(params)) {
+    if (ObjectUtils.isMissingKeys(params, ['id'])) {
       throw new InvalidRequestBodyException(['id']);
     }
 
@@ -62,15 +49,6 @@ export class GetStudentSubmittedAssignmentsDto {
 
     return new GetStudentSubmittedAssignmentsDto(params.id);
   }
-
-  private static isValidParams(params: unknown): params is RequestParams & { id: string } {
-    return (
-      params !== null &&
-      typeof params === 'object' &&
-      'id' in params &&
-      typeof params.id === 'string'
-    );
-  }
 }
 
 export class GetStudentGradesDto {
@@ -79,7 +57,7 @@ export class GetStudentGradesDto {
   ) {}
 
   public static fromRequestParams(params: any): GetStudentGradesDto {
-    if (!this.isValidParams(params)) {
+    if (ObjectUtils.isMissingKeys(params, ['id'])) {
       throw new InvalidRequestBodyException(['id']);
     }
 
@@ -88,14 +66,5 @@ export class GetStudentGradesDto {
     }
 
     return new GetStudentGradesDto(params.id);
-  }
-
-  private static isValidParams(params: unknown): params is RequestParams & { id: string } {
-    return (
-      params !== null &&
-      typeof params === 'object' &&
-      'id' in params &&
-      typeof params.id === 'string'
-    );
   }
 }
