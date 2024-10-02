@@ -37,7 +37,7 @@ export class AssignmentsController {
     return this.router;
   }
 
-  private async gradeAssignment(req: Request, res: Response, next: NextFunction) {
+  private async gradeAssignment(req: Request, res: Response) {
     const dto = GradeAssignmentDto.fromRequestBody(req.body);
 
     const response = await this.assignmentsService.gradeAssignment(dto);
@@ -45,7 +45,7 @@ export class AssignmentsController {
     res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(response), success: true });
   }
 
-  private async submitAssignment(req: Request, res: Response, next: NextFunction) {
+  private async submitAssignment(req: Request, res: Response) {
     const dto = SubmitAssignmentDto.fromRequestBody(req.body);
 
     const studentAssignmentUpdated = await this.assignmentsService.submitAssignment(dto);
@@ -53,7 +53,7 @@ export class AssignmentsController {
     res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(studentAssignmentUpdated), success: true });
   }
 
-  private async assignAssignmentToStudent(req: Request, res: Response, next: NextFunction) {
+  private async assignAssignmentToStudent(req: Request, res: Response) {
     const dto = AssignAssignmentToStudentDto.fromRequestBody(req.body);
 
     const studentAssignment = await this.assignmentsService.assignAssignmentToStudent(dto);
@@ -69,7 +69,7 @@ export class AssignmentsController {
     res.status(201).json({ error: undefined, data: ObjectUtils.parseForResponse(assignment), success: true });
   }
 
-  private async getAssignmentById(req: Request, res: Response, next: NextFunction) {
+  private async getAssignmentById(req: Request, res: Response) {
     const dto = GetAssignmentByIdDto.fromRequestParams(req.params);
 
     const assignment = await this.assignmentsService.getAssignmentById(dto.id);

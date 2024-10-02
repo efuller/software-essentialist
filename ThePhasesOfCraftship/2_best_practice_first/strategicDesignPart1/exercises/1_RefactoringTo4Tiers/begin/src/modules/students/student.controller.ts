@@ -38,7 +38,7 @@ export class StudentController {
     return this.router;
   }
 
-  private async createStudent(req: Request, res: Response, next: NextFunction) {
+  private async createStudent(req: Request, res: Response) {
     const dto = CreateStudentDto.fromRequestBody(req.body);
 
     const student = await this.studentService.createStudent(dto);
@@ -46,12 +46,12 @@ export class StudentController {
     res.status(201).json({ error: undefined, data: ObjectUtils.parseForResponse(student), success: true });
   }
 
-  private async getAllStudents(req: Request, res: Response, next: NextFunction) {
+  private async getAllStudents(req: Request, res: Response) {
     const students = await this.studentService.getAllStudents();
     res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(students), success: true });
   }
 
-  private async getStudentById(req: Request, res: Response, next: NextFunction) {
+  private async getStudentById(req: Request, res: Response) {
     const dto = GetStudentByIdDto.fromRequestParams(req.params);
 
     const student = await this.studentService.getStudentById(dto);
@@ -59,7 +59,7 @@ export class StudentController {
     res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(student), success: true });
   }
 
-  private async getStudentSubmittedAssignments(req: Request, res: Response, next: NextFunction) {
+  private async getStudentSubmittedAssignments(req: Request, res: Response) {
     const dto = GetStudentSubmittedAssignmentsDto.fromRequestParams(req.params);
 
     const studentAssignments = await this.studentService.getStudentSubmittedAssignments(dto);
@@ -67,7 +67,7 @@ export class StudentController {
     res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(studentAssignments), success: true });
   }
 
-  private async getStudentGrades(req: Request, res: Response, next: NextFunction) {
+  private async getStudentGrades(req: Request, res: Response) {
     const dto = GetStudentGradesDto.fromRequestParams(req.params);
 
     const studentAssignments = await this.studentService.getStudentGrades(dto);

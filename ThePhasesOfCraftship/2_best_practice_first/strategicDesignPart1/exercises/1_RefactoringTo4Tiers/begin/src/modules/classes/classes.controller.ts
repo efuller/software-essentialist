@@ -39,7 +39,7 @@ export class ClassesController {
     res.status(200).json({ error: undefined, data: ObjectUtils.parseForResponse(cls), success: true });
   }
 
-  private async createClass(req: Request, res: Response, next: NextFunction) {
+  private async createClass(req: Request, res: Response) {
     const createClassDto = CreateClassDto.fromRequestBody(req.body);
 
     const cls = await this.classesService.createClass(createClassDto);
@@ -47,7 +47,7 @@ export class ClassesController {
     res.status(201).json({ error: undefined, data: ObjectUtils.parseForResponse(cls), success: true });
   }
 
-  private async enrollStudentToClass(req: Request, res: Response, next: NextFunction) {
+  private async enrollStudentToClass(req: Request, res: Response) {
     const dto = EnrollStudentToClassDto.fromRequestBody(req.body);
 
     const classEnrollment = await this.classesService.enrollStudentToClass(dto);
@@ -55,7 +55,7 @@ export class ClassesController {
     res.status(201).json({ error: undefined, data: ObjectUtils.parseForResponse(classEnrollment), success: true });
   }
 
-  private async getClassAssignments(req: Request, res: Response, next: NextFunction) {
+  private async getClassAssignments(req: Request, res: Response) {
     const dto = GetClassAssignmentsDto.fromRequestParams(req.params);
 
     const assignments = await this.classesService.getClassAssignments(dto);
