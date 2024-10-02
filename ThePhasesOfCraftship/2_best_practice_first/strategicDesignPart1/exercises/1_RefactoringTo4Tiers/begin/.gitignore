@@ -3,4 +3,3 @@ package-lock.json
 build
 migration_lock.toml
 /NOTES.md
-dev.db
