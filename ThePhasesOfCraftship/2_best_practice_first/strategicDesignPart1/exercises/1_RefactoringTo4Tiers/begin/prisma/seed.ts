@@ -1,5 +1,5 @@
 import { Student, Class, Assignment, StudentAssignment, ReportCard, ClassGradeReport, ClassEnrollment } from "@prisma/client";
-import { prisma } from "../src/database";
+import { prisma } from "../src/shared/database";
 
 
 async function seed() {
