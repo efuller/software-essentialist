@@ -22,12 +22,12 @@ export class GetClassByIdDto {
 export class CreateClassDto {
   private constructor(public name: string) {}
 
-  static fromRequestBody(body: unknown): CreateClassDto {
+  static fromRequestBody(body: any): CreateClassDto {
     if (ObjectUtils.isMissingKeys(body, ['name'])) {
       throw new InvalidRequestBodyException(['name']);
     }
 
-    const { name } = body as { name: string };
+    const { name } = body;
     return new CreateClassDto(name);
   }
 }
@@ -35,12 +35,12 @@ export class CreateClassDto {
 export class EnrollStudentToClassDto {
   private constructor(public studentId: string, public classId: string) {}
 
-  static fromRequestBody(body: unknown): EnrollStudentToClassDto {
+  static fromRequestBody(body: any): EnrollStudentToClassDto {
     if (ObjectUtils.isMissingKeys(body, ['studentId', 'classId'])) {
       throw new InvalidRequestBodyException(['studentId', 'classId']);
     }
 
-    const { studentId, classId } = body as { studentId: string, classId: string };
+    const { studentId, classId } = body;
     return new EnrollStudentToClassDto(studentId, classId);
   }
 }
