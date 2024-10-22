@@ -2,12 +2,17 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import * as path from "node:path";
 import request from "supertest";
 import { app } from "../../src/index";
+import { resetDatabase } from "../fixtures/reset";
 
 const feature = loadFeature(
   path.join(__dirname, "../acceptance/createClassRoom.feature")
 );
 
 defineFeature(feature, (test) => {
+  beforeEach(async () => {
+    await resetDatabase();
+  });
+
   test('Successfully create a class room', ({ given, when, then }) => {
     let requestBody: any = {};
     let response: any = {};
@@ -28,7 +33,7 @@ defineFeature(feature, (test) => {
     });
   });
 
-  test.only('Fail to create a class room', ({ given, when, then }) => {
+  test('Fail to create a class room', ({ given, when, then }) => {
     let requestBody: any = {};
     let response: any = {};
     given('I want to create a class room with no name', () => {

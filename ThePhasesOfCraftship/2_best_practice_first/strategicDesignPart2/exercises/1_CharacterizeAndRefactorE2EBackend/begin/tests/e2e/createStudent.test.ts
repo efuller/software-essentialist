@@ -2,13 +2,18 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import * as path from "node:path";
 import request from "supertest";
 import { app } from "../../src/index";
+import { resetDatabase } from "../fixtures/reset";
 
 const feature = loadFeature(
   path.join(__dirname, "../acceptance/createStudent.feature")
 );
 
 defineFeature(feature, (test) => {
-  test.skip('Successfully create a student', ({given, when, then}) => {
+  beforeEach(async () => {
+    await resetDatabase();
+  });
+
+  test('Successfully create a student', ({given, when, then}) => {
     let requestBody: any = {};
     let response: any = {};
 
