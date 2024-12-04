@@ -28,3 +28,20 @@ afterEach(async () => {
 ## Solution
 
 Under the `end` directory, you'll find a solution to the exercise.
+
+## Assignment
+
+### Create acceptance criteria for the following endpoints:
+- [x] Create a student (student created)
+- [x] Create a class(room) (class created)
+- [ ] Assign student to class (student assigned to class)
+- [ ] Create assignment (assignment created)
+- [ ] Assign student to assignment (student assigned to assignment)
+- [ ] Student submits assignment (student submitted assignment)
+- [ ] Grade student assignment (student assignment graded)
+- [ ] Get all students
+- [ ] Get student by id
+- [ ] Get assignment by id
+- [ ] Get all assignments for a class
+- [ ] Get all student submitted assignments
+- [ ] Get all students grades by student id
