@@ -1,5 +1,6 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import * as path from "node:path";
+// @ts-ignore
 import request from "supertest";
 import { app } from "../../src/index";
 import { resetDatabase } from "../fixtures/reset";

@@ -1,8 +1,9 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import * as path from "node:path";
-import request from "supertest";
 import { app } from "../../src/index";
 import { resetDatabase } from "../fixtures/reset";
+// @ts-ignore
+import request from "supertest";
 
 const feature = loadFeature(
   path.join(__dirname, "../acceptance/createClassRoom.feature")

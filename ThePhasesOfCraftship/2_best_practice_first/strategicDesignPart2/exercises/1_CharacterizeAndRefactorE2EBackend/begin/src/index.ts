@@ -73,7 +73,7 @@ app.post("/students", async (req: Request, res: Response) => {
   }
 });
 
-// POST class created
+// POST classroom created
 app.post("/classes", async (req: Request, res: Response) => {
   try {
     if (isMissingKeys(req.body, ["name"])) {
