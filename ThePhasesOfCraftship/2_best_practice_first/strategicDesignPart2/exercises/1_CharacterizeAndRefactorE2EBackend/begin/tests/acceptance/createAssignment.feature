@@ -5,13 +5,11 @@ Feature: Create Assignment
   So that I can assign it to a class
 
   Scenario: Successfully create an assignment
-    Given I have a class named "Math 101"
-    And I want to create an assignment named "Homework 1"
+    Given I have a class
     When I send a request to create an assignment
     Then the assignment should be created successfully
 
   Scenario: Create an assignment with no class
-    Given I want to create an assignment name "Homework 2"
-    And There is no class to assign the assignment to
-    When I send a request to create a class
+    Given I want to create an assignment
+    When I send a request to create the assignment with no class
     Then the assignment should not be created
