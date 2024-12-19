@@ -110,7 +110,7 @@ app.post("/classes", async (req: Request, res: Response) => {
   }
 });
 
-// POST student assigned to class
+// POST student assigned/enrolled to class
 app.post("/class-enrollments", async (req: Request, res: Response) => {
   try {
     if (isMissingKeys(req.body, ["studentId", "classId"])) {
