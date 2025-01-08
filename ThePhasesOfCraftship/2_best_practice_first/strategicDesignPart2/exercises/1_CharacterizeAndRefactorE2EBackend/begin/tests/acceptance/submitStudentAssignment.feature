@@ -5,15 +5,11 @@ Feature: Submit Student Assignment
   So that I can get a grade
 
   Scenario: Successfully submit an assignment
-    Given I have a class named "Math 101"
-    And I have an assignment named "Homework 1"
-    And I want to submit the assignment
+    Given I have a student with an assignment
     When I send a request to submit the assignment
     Then the assignment should be submitted successfully
 
   Scenario: Submit and assignment that's already been submitted
-    Given I have a class named "Math 101"
-    And I have an assignment named "Homework 1"
-    And I have already submitted the assignment
-    When I send a request to submit the assignment
+    Given I have a student with a submitted assignment
+    When I send a request to submit the same assignment
     Then the assignment should not be submitted
