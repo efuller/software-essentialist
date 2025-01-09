@@ -1,10 +1,9 @@
 import { prisma } from "../../src/database";
 import { faker } from '@faker-js/faker';
-import { Student } from "@prisma/client";
-import { MakeIdOptional } from "../../src/types";
+import { Prisma } from "@prisma/client";
 
 export class StudentBuilder {
-  private studentProps: MakeIdOptional<Student>;
+  private studentProps: Prisma.StudentCreateInput;
 
   constructor() {
     this.studentProps = {
