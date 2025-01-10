@@ -34,22 +34,22 @@ defineFeature(feature, (test) => {
     });
   });
 
-  // // test('Unsuccessfully get student by Id', ({ given, when, then }) => {
-  // //   let getStudentByIdResponse2: any = {};
-  // //   let student2: Student;
-  // //
-  // //   given('I have a student', () => {
-  // //     // student2 = await new StudentBuilder().build();
-  // //     expect(true).toBe(true);
-  // //   });
-  // //
-  // //   when('I get the student by an invalid id',async () => {
-  // //     const test = '';
-  // //     getStudentByIdResponse2 = await request(app).get(`/students/invalidId`)
-  // //   });
-  // //
-  // //   then('I should see an error message', (arg0) => {
-  // //     expect(getStudentByIdResponse2.status).toBe(422);
-  // //   });
+  // test('Unsuccessfully get student by Id', ({ given, when, then }) => {
+  //   let getStudentByIdResponse2: any = {};
+  //   let student2: Student;
+  //
+  //   given('I have a student', () => {
+  //     // student2 = await new StudentBuilder().build();
+  //     expect(true).toBe(true);
+  //   });
+  //
+  //   when('I get the student by an invalid id',async () => {
+  //     const test = '';
+  //     getStudentByIdResponse2 = await request(app).get(`/students/invalidId`)
+  //   });
+  //
+  //   then('I should see an error message', (arg0) => {
+  //     expect(getStudentByIdResponse2.status).toBe(422);
+  //   });
   // });
 });
