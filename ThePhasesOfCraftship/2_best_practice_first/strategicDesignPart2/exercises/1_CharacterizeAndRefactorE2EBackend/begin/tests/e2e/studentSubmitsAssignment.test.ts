@@ -9,7 +9,7 @@ import { AssignmentBuilder } from "../builders/assignmentBuilder";
 import { EnrollStudentToClassBuilder } from "../builders/enrollStudentToClass.builder";
 import { Assignment, AssignmentSubmission, Class, ClassEnrollment, Student, StudentAssignment } from "@prisma/client";
 import { app } from "../../src";
-import { StudentSubmitAssignmentBuilder } from "../builders/studentSubmitAssignment.builder";
+import { StudentSubmitAssignment, StudentSubmitAssignmentBuilder } from "../builders/studentSubmitAssignment.builder";
 
 const feature = loadFeature(
   path.join(__dirname, "../acceptance/submitStudentAssignment.feature")
@@ -48,7 +48,7 @@ defineFeature(feature, (test) => {
 
   test('Submit and assignment that\'s already been submitted', ({ given, when, then }) => {
     let submittedAssignmentResponse: any = {};
-    let submittedAssignment: { submittedAssignment: AssignmentSubmission, assignment: Assignment, assignedAssignment: StudentAssignment, student: Student, newClass: Class, classEnrollment: ClassEnrollment };
+    let submittedAssignment: StudentSubmitAssignment | AssignmentSubmission;
 
     given('I have a student with a submitted assignment', async () => {
       submittedAssignment = await new StudentSubmitAssignmentBuilder()
@@ -57,12 +57,14 @@ defineFeature(feature, (test) => {
     });
 
     when('I send a request to submit the same assignment', async () => {
-      submittedAssignmentResponse = await request(app)
-        .post('/student-assignments/submit')
-        .send({
-          studentId: submittedAssignment.student.id,
-          assignmentId: submittedAssignment.assignment.id,
-        });
+      if ("student" in submittedAssignment && "assignment" in submittedAssignment) {
+        submittedAssignmentResponse = await request(app)
+          .post('/student-assignments/submit')
+          .send({
+            studentId: submittedAssignment.student.id,
+            assignmentId: submittedAssignment.assignedAssignment.assignmentId
+          });
+      }
     });
 
     then('the assignment should not be submitted', () => {
