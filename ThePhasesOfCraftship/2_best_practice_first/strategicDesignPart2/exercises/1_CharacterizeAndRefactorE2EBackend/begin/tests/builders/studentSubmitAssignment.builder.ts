@@ -4,14 +4,7 @@ import { AssignmentBuilder } from "./assignmentBuilder";
 import { EnrollStudentToClassBuilder } from "./enrollStudentToClass.builder";
 import { prisma } from "../../src/database";
 import { AssignmentSubmission, Class, ClassEnrollment, Student, StudentAssignment } from "@prisma/client";
-
-export interface StudentSubmitAssignment {
-  submittedAssignment: AssignmentSubmission;
-  student: Student;
-  assignedAssignment: StudentAssignment;
-  newClass: Class;
-  classEnrollment: ClassEnrollment;
-}
+import { StudentSubmitAssignment } from "../fixtures/types";
 
 export class StudentSubmitAssignmentBuilder {
   private assignNewAssignmentToStudentBuilder: AssignNewAssignmentToStudentBuilder | undefined;

@@ -9,7 +9,8 @@ import { AssignmentBuilder } from "../builders/assignmentBuilder";
 import { EnrollStudentToClassBuilder } from "../builders/enrollStudentToClass.builder";
 import { Assignment, AssignmentSubmission, Class, ClassEnrollment, Student, StudentAssignment } from "@prisma/client";
 import { app } from "../../src";
-import { StudentSubmitAssignment, StudentSubmitAssignmentBuilder } from "../builders/studentSubmitAssignment.builder";
+import { StudentSubmitAssignmentBuilder } from "../builders/studentSubmitAssignment.builder";
+import { StudentSubmitAssignment } from "../fixtures/types";
 
 const feature = loadFeature(
   path.join(__dirname, "../acceptance/submitStudentAssignment.feature")
