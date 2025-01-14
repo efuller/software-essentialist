@@ -25,9 +25,9 @@ defineFeature(feature, (test) => {
   });
 
   test('Get all student submitted assignments for a student', ({ given, when, then }) => {
-      let studentSubmitAssignmentResponse: any = {};
-      let enrolledStudent: EnrolledStudent;
-      let submittedAssignments: any[];
+    let studentSubmitAssignmentResponse: any = {};
+    let enrolledStudent: EnrolledStudent;
+    let submittedAssignments: any[];
 
     given('I have a student with multiple submitted assignments', async () => {
       const classBuilder = new ClassBuilder();
@@ -89,7 +89,6 @@ defineFeature(feature, (test) => {
   test('Get all submitted assignments from a student by their id that doesn\'t exist', async ({ given, when, then }) => {
     let studentSubmitAssignmentResponse: any = {};
     let enrolledStudent: EnrolledStudent;
-    let submittedAssignments: any[];
 
     given('I have a student with multiple submitted assignments', async () => {
       const classBuilder = new ClassBuilder();
@@ -127,7 +126,7 @@ defineFeature(feature, (test) => {
           .build();
       });
 
-      submittedAssignments = await Promise.all(insertableAssignments);
+      await Promise.all(insertableAssignments);
     });
 
     when('I get all submitted assignments for a student that doesn\'t exist', async () => {
