@@ -56,6 +56,7 @@ defineFeature(feature, (test) => {
     then('the assignment should not be created', () => {
       expect(assignmentCreatedResponse.status).toBe(400);
       expect(assignmentCreatedResponse.body.data).toBeUndefined();
+      expect(assignmentCreatedResponse.body.error).toBe('ValidationError');
     });
   });
 });

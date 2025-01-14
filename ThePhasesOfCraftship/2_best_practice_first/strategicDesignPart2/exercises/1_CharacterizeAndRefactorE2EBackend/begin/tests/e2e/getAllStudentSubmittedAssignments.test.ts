@@ -138,6 +138,7 @@ defineFeature(feature, (test) => {
 
     then('I should see an error', () => {
       expect(studentSubmitAssignmentResponse.status).toBe(404);
+      expect(studentSubmitAssignmentResponse.body.error).toBe('StudentNotFound');
     });
   });
 });

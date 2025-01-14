@@ -34,6 +34,9 @@ defineFeature(feature, (test) => {
 
     then('I should see the assignment\'s information', () => {
       expect(assignmentsResponse.status).toBe(200);
+      expect(assignmentsResponse.body.data).toEqual(
+        expect.objectContaining(assignment)
+      );
     });
   });
 
@@ -55,6 +58,7 @@ defineFeature(feature, (test) => {
 
     then('I should see an error message', () => {
       expect(assignmentsResponse.status).toBe(400);
+      expect(assignmentsResponse.body.error).toBe("ValidationError");
     });
   });
 });

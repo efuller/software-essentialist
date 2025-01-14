@@ -44,6 +44,7 @@ defineFeature(feature, (test) => {
 
     then('the assignment should be submitted successfully', () => {
       expect(studentSubmitAssignmentResponse.status).toBe(201);
+      expect(studentSubmitAssignmentResponse.body.data.studentAssignmentId).toBe(studentAssignment.assignedAssignment.id);
     });
   });
 
@@ -70,6 +71,7 @@ defineFeature(feature, (test) => {
 
     then('the assignment should not be submitted', () => {
       expect(submittedAssignmentResponse.status).toBe(409);
+      expect(submittedAssignmentResponse.body.error).toBe('AssignmentAlreadySubmitted');
     });
   });
 });

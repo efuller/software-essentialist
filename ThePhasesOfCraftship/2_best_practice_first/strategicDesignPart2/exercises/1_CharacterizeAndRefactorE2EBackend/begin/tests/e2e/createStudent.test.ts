@@ -53,6 +53,7 @@ defineFeature(feature, (test) => {
     then('the student should not be created', () => {
       expect(response.status).toBe(400);
       expect(response.body.data).toBeUndefined();
+      expect(response.body.error).toBe("ValidationError");
     });
   });
 
@@ -73,6 +74,7 @@ defineFeature(feature, (test) => {
     then('the student should not be created', () => {
       expect(response.status).toBe(400);
       expect(response.body.data).toBeUndefined();
+      expect(response.body.error).toBe("ValidationError");
     });
   });
 });

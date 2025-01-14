@@ -21,10 +21,11 @@ defineFeature(feature, (test) => {
   test('Get all assignments for class', ({ given, when, then }) => {
     let assignmentsResponse: any = {};
     let newClass: Class;
+    let assignments: any[];
 
     given('I have a class with multiple assignments', async () => {
       newClass = await new ClassBuilder().build();
-      await Promise.all([
+      assignments = await Promise.all([
         await new AssignmentBuilder().fromClass(newClass).build(),
         await new AssignmentBuilder().fromClass(newClass).build(),
         await new AssignmentBuilder().fromClass(newClass).build(),
@@ -38,6 +39,13 @@ defineFeature(feature, (test) => {
     then('I should see all the assignments', () => {
       expect(assignmentsResponse.status).toBe(200);
       expect(assignmentsResponse.body.data).toHaveLength(3);
+      expect(assignmentsResponse.body.data).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(assignments[0]),
+          expect.objectContaining(assignments[1]),
+          expect.objectContaining(assignments[2]),
+        ])
+      );
     });
   });
 
@@ -61,6 +69,7 @@ defineFeature(feature, (test) => {
 
     then('I should see an error message', () => {
       expect(assignmentsResponse.status).toBe(404);
+      expect(assignmentsResponse.body.error).toBe("ClassNotFound");
     });
   });
 });

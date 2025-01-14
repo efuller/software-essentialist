@@ -65,6 +65,7 @@ defineFeature(feature, (test) => {
 
     then('The student should not be enrolled to the class', () => {
       expect(studentEnrolledToClassResponse.status).toBe(404);
+      expect(studentEnrolledToClassResponse.body.error).toBe('ClassNotFound');
     });
   });
 });

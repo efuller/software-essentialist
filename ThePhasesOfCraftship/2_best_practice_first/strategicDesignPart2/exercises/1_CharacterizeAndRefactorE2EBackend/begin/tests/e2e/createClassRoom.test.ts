@@ -48,6 +48,7 @@ defineFeature(feature, (test) => {
     then('the class room should not be created', () => {
       expect(response.status).toBe(400);
       expect(response.body.data).toBeUndefined();
+      expect(response.body.error).toBe("ValidationError");
     });
   });
 });

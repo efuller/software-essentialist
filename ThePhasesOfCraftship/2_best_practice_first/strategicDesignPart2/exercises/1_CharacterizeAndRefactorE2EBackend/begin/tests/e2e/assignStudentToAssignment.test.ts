@@ -78,6 +78,7 @@ defineFeature(feature, (test) => {
 
     then('The student should not be assigned to the assignment', () => {
       expect(studentAssignedToAssignmentResponse.status).toBe(409);
+      expect(studentAssignedToAssignmentResponse.body.error).toBe('AlreadyAssignedAssignmentToStudent');
     });
   });
 });
