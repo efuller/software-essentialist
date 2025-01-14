@@ -31,17 +31,22 @@ Under the `end` directory, you'll find a solution to the exercise.
 
 ## Assignment
 
+### Create at least one success and one failure test for each endpoint.
+
 ### Create acceptance criteria for the following endpoints:
 - [x] Create a student (student created)
 - [x] Create a class(room) (class created)
-- [ ] Assign student to class (student assigned to class)
-- [ ] Create assignment (assignment created)
-- [ ] Assign student to assignment (student assigned to assignment)
-- [ ] Student submits assignment (student submitted assignment)
-- [ ] Grade student assignment (student assignment graded)
-- [ ] Get all students
-- [ ] Get student by id
-- [ ] Get assignment by id
-- [ ] Get all assignments for a class
-- [ ] Get all student submitted assignments
-- [ ] Get all students grades by student id
+- [x] Assign/enroll student to class (student assigned to class)
+- [x] Create assignment (assignment created)
+- [x] Assign student to assignment (student assigned to assignment)
+  - create student, create class, enroll student to class, create assignment, assign assignment to student
+- [x] Student submits assignment (student submitted assignment)
+  - create student, create class, enroll student to class, create assignment, assign assignment to student, student submits assignment
+- [x] Grade student assignment (student assignment graded)
+  - create student, create class, enroll student to class, create assignment, assign assignment to student, student submits assignment, grade student assignment
+- [x] Get all students
+- [x] Get student by id
+- [x] Get assignment by id
+- [x] Get all assignments for a class
+- [x] Get all student submitted assignments
+- [x] Get all students grades by student id
