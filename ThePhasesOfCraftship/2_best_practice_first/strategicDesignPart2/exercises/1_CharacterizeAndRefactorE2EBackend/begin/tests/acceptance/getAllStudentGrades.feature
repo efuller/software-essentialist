@@ -1,25 +1,17 @@
-Feature: Get All Student Submitted Assignments
+Feature: Get All Student Graded Assignments
 
   As a teacher
-  I want to to be able to see all assignments that have been submitted by students
-  So that I can grade them
+  I want to to be able to see all the graded assignments for a student
+  So that I can review them
 
-  Scenario: Get all student submitted assignments for a student
-    Given I have a class named "Math 101"
-    And I have a student named "John Doe"
-    And I have an assignment with a name of "Homework 1"
-    And I have an assignment with a name of "Homework 2"
-    And John Doe has submitted the assignment
-    When I get all assignments for the class
-    Then I should see the assignment "Homework 1" submitted by "John Doe"
-    And I should see the assignment "Homework 2" not submitted by "John Doe"
+  Scenario: Get all student grades from a student by their id
+    Given I have a student with multiple graded assignments
+    When I get all graded assignments for a student
+    Then I should see all the graded assignments for that student
 
-  Scenario: Get all submitted assignments from a student by their id that doesn't exist
-    Given I have a class named "Math 101"
-    And I have a student named "John Doe"
-    And I have an assignment with a name of "Homework 1"
-    And John Doe has submitted the assignment
-    When I get all submitted assignments for a student with an id of "123"
-    Then I should see an error message "Student not found"
+  Scenario: Get all submitted grades from a student by their id that doesn't exist
+    Given I have a student with multiple graded assignments
+    When I get all submitted assignments for a student that doesn't exist
+    Then I should see an error message
 
 
